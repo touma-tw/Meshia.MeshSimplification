@@ -1,7 +1,7 @@
 {
-  "name": "com.ramtype0.meshia.mesh-simplification",
-  "displayName": "Meshia Mesh Simplification",
-  "version": "3.1.0",
+  "name": "com.touma.meshia.mesh-simplification",
+  "displayName": "Meshia Mesh Simplification (Touma Fork)",
+  "version": "4.0.0",
   "unity": "2022.3",
   "description": "Burst accelerated mesh simplification.",
   "vrchatVersion": "2022.1.1",
@@ -22,5 +22,8 @@
   },
   "vpmDependencies": {
     "com.anatawa12.custom-localization-for-editor-extension": "^1.2.1"
+  },
+  "legacyFolders": {
+    "Packages/com.ramtype0.meshia.mesh-simplification": "99.0.0"
   }
 }
