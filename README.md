@@ -116,15 +116,52 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ## 日本語
 
-これは [Ram.Type-0 氏の Meshia Mesh Simplification](https://github.com/RamType0/Meshia.MeshSimplification) のフォークです。Unity Job System + Burst による高速・非同期処理の本体はそのままに、外観を保つためのオプション（テクスチャの歪み軽減、自己交差の抑制、マテリアル／UV 境界の保持）と、Cascading UI での実際の三角形数表示を追加しています。
+これは [Ram.Type-0 氏の Meshia Mesh Simplification](https://github.com/RamType0/Meshia.MeshSimplification) のフォークです。Unity Job System + Burst による高速・非同期処理の本体はそのままに、**見た目を保つ**ためのオプション（主に VRChat アバター向け）を追加しています。テクスチャの歪みの軽減、自己交差（メッシュの突き抜け）の抑制、マテリアル／UV 境界の保持に加え、Cascading UI に「実際の三角形数」表示を追加しました。
 
-新しいオプションは `MeshSimplifierOptions` のフィールドで制御し、すべて無効にすると元のエンジンと同じ挙動になります。詳細は上記の英語／繁体字中国語セクションの表を参照してください（既定で *Preserve Texture Mapping* / *Suppress Self-Intersection* / *Preserve Material Boundaries* が有効、*Preserve UV Seams* は無効）。
+オリジナルの功績はすべて Ram.Type-0 氏に帰属します。[オリジナルのリポジトリ](https://github.com/RamType0/Meshia.MeshSimplification)・[ドキュメント](https://ramtype0.github.io/Meshia.MeshSimplification/)もご覧ください。
+
+### このフォークで追加された機能
+
+従来の Quadric Error Metrics (QEM) アルゴリズムは「形状」だけを最適化します。本フォークは、**見た目（UV／マテリアル）** と **マージの安全性** も考慮するオプションを追加します。すべて `MeshSimplifierOptions` の新しいフィールドで制御され、**すべて無効にすると元のエンジンと完全に同じ挙動**になります。
+
+| オプション（UI ラベル） | 既定値 | 機能 |
+| --- | --- | --- |
+| **Preserve Texture Mapping**（`UseAttributeAwareError`） | オン | UV0 を誤差計算そのものに組み込みます（位置 + UV の5次元属性二次誤差、Garland-Heckbert / Hoppe）。マージ位置の求解が最適な位置**と** UV を同時に返すため、テクスチャの歪みが大幅に起きにくくなります。 |
+| **UV Error Weight**（`UvErrorWeight`） | 1.0 | 上記の「形状 vs UV」のバランス。大きいほどテクスチャを強く保持し、小さいほど幾何精度を優先します。 |
+| **Suppress Self-Intersection**（`ConstrainOptimalPosition`） | オン | マージ後の頂点を元の辺の近傍に制限し、ほぼ退化した（細長い）三角形を却下します。他の面を突き抜けるスパイク（自己交差）を抑えます。 |
+| **Max Collapse Displacement Factor**（`MaxCollapseDisplacementFactor`） | 2.0 | 上記の制限の厳しさ（小さいほど厳しい）。 |
+| **Preserve Material Boundaries**（`PreserveSubMeshBoundaries`） | オン | 異なるサブメッシュ（マテリアル）に属する頂点同士をマージしません。マテリアル境界のにじみを防ぎます。 |
+| **Preserve UV Seams**（`PreserveUVSeams`） | **オフ** | UV シーム上の頂点を固定します。保護力は強いものの、最も削減を妨げるオプション（結果が目標値より大幅に多く残ることがある）のため既定はオフです。テクスチャ自体は *Preserve Texture Mapping* で緩やかに保護されます。 |
+
+> 効果は**状況によって異なり**、常に良くなるわけではありません。これらのオプションはより多くのケースに対応するためのものです。メッシュと削減率に合わせて選んでください（下記の「チューニング」参照）。
+
+#### 元の挙動に戻すには
+
+上記6つのオプションを `false`／従来値に設定してください。本フォークの既定では *Preserve Texture Mapping*・*Suppress Self-Intersection*・*Preserve Material Boundaries* が有効で、*Preserve UV Seams* は無効です。
+
+#### チューニングガイド
+
+- **形状が支配的なメッシュを強く削減する場合**（例：靴を 68k → 6k 三角形）：**UV Error Weight** を下げるか **Preserve Texture Mapping** をオフにすると、従来どおりの積極的な削減になります。
+- **テクスチャ模様 / UV アトラスのメッシュを中程度に削減する場合**（例：ストライプの服を半分に）：既定のままにしてください。属性考慮誤差が活き、従来版で起こりがちなストライプの歪みを防ぎます。
+- **目標の三角形数まで下がらない場合**：いずれかの保持オプションが頂点をロックしています。**Preserve UV Seams**・**Preserve Surface Curvature**・**Preserve Material Boundaries** を確認してください。Cascading UI に実際に到達可能な数が表示されます（下記）。
+
+#### Cascading UI：実際の三角形数
+
+**Meshia Cascading Avatar Mesh Simplifier** のリストでは、各 renderer の行の数値フィールドが、要求した目標値ではなく **NDMF プレビューによる実際の三角形数** を表示します。保持オプションにより目標まで下がらない場合——たとえば `0` を指定しても `12345` までしか下がらない場合——実際の値を色付きで表示します。フィールドは編集可能で、フォーカスすれば正確な目標値を入力できます。
+
+> NDMF プレビューを有効にする必要があります（合計数を表示しているものと同じプレビューです）。
+
+### インストール
+
+本フォークは、オリジナルと**同じアセンブリ名・名前空間**（`Meshia.MeshSimplification`）を使用し `legacyFolders` を宣言しているため、オリジナルの `com.ramtype0.meshia.mesh-simplification` パッケージと**同時にはインストールできません**（どちらか一方を使用してください）。
+
+VCC／Unity Package Manager（例：*Add package from git URL* でこのリポジトリを指定）でプロジェクトに追加すれば、使い方はオリジナルと同じです。
 
 ### 使い方
 
 #### NDMF統合
 
-`MeshiaMeshSimplifier`（アバター全体には *Meshia Cascading Avatar Mesh Simplifier*）をモデルにアタッチします。エディターで軽量化結果をプレビューできます。
+`MeshiaMeshSimplifier`（アバター全体には *Meshia Cascading Avatar Mesh Simplifier*）をモデルにアタッチします。エディターで軽量化結果をプレビューしながらパラメーターを調整できます。
 
 #### C#から呼び出す
 
@@ -139,6 +176,8 @@ await MeshSimplifier.SimplifyAsync(originalMesh, target, options, simplifiedMesh
 // 同期API
 MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 ```
+
+`options` は `MeshSimplifierOptions.Default` で、見た目を保持する既定構成になります。
 
 ---
 
