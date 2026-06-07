@@ -189,6 +189,7 @@ namespace Meshia.MeshSimplification.Ndmf.Editor
                 var preserveBorderEdgesBonesFoldout = itemRoot.Q<Foldout>("PreserveBorderEdgesBonesFoldout");
                 itemRoot.BindProperty(entryProperty);
                 itemRoot.userData = index;
+                UpdateEntryActualTriangleCount(itemRoot);
                 var targetRenderer = entry.GetTargetRenderer(Target);
                 if (targetRenderer != null)
                 {
@@ -249,6 +250,56 @@ namespace Meshia.MeshSimplification.Ndmf.Editor
                 var optionsToggle = itemRoot.Q<Toggle>("OptionsToggle");
                 var optionsField = itemRoot.Q<PropertyField>("OptionsField");
                 var preserveBorderEdgesBonesFoldout = itemRoot.Q<Foldout>("PreserveBorderEdgesBonesFoldout");
+
+                // The numeric field shows the actual resulting triangle count (from preview) while idle, so when
+                // preserve options keep the result above the requested target (e.g. you ask for 0 but it can only
+                // reach 12345) you see the real achievable count. It stays editable: focus it to type an exact
+                // target. The field is driven manually (unbound) so the displayed actual result does not fight the
+                // typed target.
+                targetTriangleCountField.bindingPath = null;
+                targetTriangleCountField.isDelayed = true;
+                var isEditingTargetTriangleCountField = false;
+
+                targetTriangleCountField.RegisterCallback<FocusInEvent>(_ =>
+                {
+                    isEditingTargetTriangleCountField = true;
+                    // While editing, show the actual target value (not the displayed result) so editing starts from it.
+                    if (itemRoot.userData is int editingIndex && editingIndex >= 0 && editingIndex < Target.Entries.Count)
+                    {
+                        targetTriangleCountField.SetValueWithoutNotify(Target.Entries[editingIndex].TargetTriangleCount);
+                    }
+                });
+                targetTriangleCountField.RegisterCallback<FocusOutEvent>(_ => isEditingTargetTriangleCountField = false);
+
+                targetTriangleCountField.RegisterValueChangedCallback(changeEvent =>
+                {
+                    if (itemRoot.userData is not int editedIndex || editedIndex < 0 || editedIndex >= Target.Entries.Count)
+                    {
+                        return;
+                    }
+                    var editedEntry = Target.Entries[editedIndex];
+                    var maxTriangleCount = TryGetOriginalTriangleCount(editedEntry, true, out var originalCount) ? originalCount : int.MaxValue;
+                    var newTarget = Mathf.Clamp(changeEvent.newValue, 0, maxTriangleCount);
+
+                    var editedEntryProperty = EntriesProperty.GetArrayElementAtIndex(editedIndex);
+                    editedEntryProperty.FindPropertyRelative(nameof(MeshiaCascadingAvatarMeshSimplifierRendererEntry.TargetTriangleCount)).intValue = newTarget;
+                    serializedObject.ApplyModifiedProperties();
+
+                    if (AutoAdjustEnabledProperty.boolValue)
+                    {
+                        AdjustQuality(editedIndex);
+                        serializedObject.ApplyModifiedProperties();
+                    }
+                });
+
+                targetTriangleCountField.schedule.Execute(() =>
+                {
+                    if (!isEditingTargetTriangleCountField)
+                    {
+                        UpdateEntryActualTriangleCount(itemRoot);
+                    }
+                }).Every(250);
+
                 enabledToggle.RegisterValueChangedCallback(changeEvent =>
                 {
                     var enabled = changeEvent.newValue;
@@ -346,6 +397,39 @@ namespace Meshia.MeshSimplification.Ndmf.Editor
 
         static Dictionary<int, string> TargetTriangleCountPresetValueToName { get; } = TargetTriangleCountPresetNameToValue.ToDictionary(keyValue => keyValue.Value, keyValue => keyValue.Key);
 
+
+        // Updates a list entry's numeric field to show the actual resulting triangle count (from the NDMF
+        // preview when available). Highlights it when the target cannot be reached because of preserve options.
+        private void UpdateEntryActualTriangleCount(VisualElement itemRoot)
+        {
+            if (itemRoot.userData is not int index)
+            {
+                return;
+            }
+            var entries = Target.Entries;
+            if (index < 0 || index >= entries.Count)
+            {
+                return;
+            }
+            if (itemRoot.Q<IntegerField>("TargetTriangleCountField") is not { } field)
+            {
+                return;
+            }
+
+            var entry = entries[index];
+            if (!TryGetSimplifiedTriangleCount(entry, true, out var actualTriangleCount))
+            {
+                return;
+            }
+
+            field.SetValueWithoutNotify(actualTriangleCount);
+
+            var isOverflow = entry.Enabled && actualTriangleCount > entry.TargetTriangleCount;
+            field.style.color = isOverflow ? new StyleColor(new Color(1f, 0.6f, 0.2f)) : new StyleColor(StyleKeyword.Null);
+            field.tooltip = isOverflow
+                ? $"The requested target ({entry.TargetTriangleCount:N0}) cannot be reached; preserve options keep it at {actualTriangleCount:N0}. Showing the actual result."
+                : "Actual resulting triangle count (from preview). Drag the slider to set the target.";
+        }
 
         private int GetTotalSimplifiedTriangleCount(bool usePreview)
         {

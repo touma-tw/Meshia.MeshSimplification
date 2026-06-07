@@ -66,5 +66,53 @@ msgstr "法線角度の許容誤差(cosθ)"
 msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.tooltip"
 msgstr "SmartLink処理時に、通常と異なる許容誤差を指定できます。2つのうち、厳しい方の値が適用されます。"
 
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.label"
+msgstr "マテリアル境界を保持"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.tooltip"
+msgstr ""
+"異なるサブメッシュ(マテリアル)に属する頂点同士のマージを防ぎます。\n"
+"アバターなど複数マテリアルのメッシュで、マテリアル境界がにじむのを防ぎます。"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.label"
+msgstr "UVシームを保持"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.tooltip"
+msgstr ""
+"位置は重なっているがUVが不連続な頂点(UVシーム)を固定します。\n"
+"軽量化時にシームをまたいでテクスチャが裂けるのを防ぎます。"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.label"
+msgstr "面の突き抜けを抑制"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.tooltip"
+msgstr ""
+"マージ後の頂点を、元の辺の近傍に制限します。\n"
+"他の面を突き抜けるスパイク(自己交差)の発生を抑えます。"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.label"
+msgstr "マージ位置の最大移動量(辺長倍率)"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.tooltip"
+msgstr ""
+"最適位置が辺の中点から「辺長×この倍率」より遠い場合、その位置を棄却します。\n"
+"小さい値ほど厳しく(突き抜けにくく)なりますが、形状の精度がわずかに下がる場合があります。"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.label"
+msgstr "テクスチャマッピングを保持(属性考慮誤差)"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.tooltip"
+msgstr ""
+"UV座標を誤差計算そのものに含めます(属性考慮の二次誤差)。\n"
+"高い削減率でのテクスチャの歪みを大きく軽減しますが、初期化時間とメモリを多く消費します。"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.label"
+msgstr "UV誤差の重み"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.tooltip"
+msgstr ""
+"幾何形状に対するUV保持の相対的な重要度です。\n"
+"大きい値ほどテクスチャマッピングを強く保持し、小さい値ほど幾何精度を優先します。"
+
 msgid "locale:ja"
 msgstr "日本語"

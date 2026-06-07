@@ -71,5 +71,53 @@ msgstr "Tolerance for Normal Angle (by cosθ)"
 msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.tooltip"
 msgstr "Use different tolerance for normal angle for Smart Link. The stricter of the two is used for Smart Link."
 
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.label"
+msgstr "Preserve Material Boundaries"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.tooltip"
+msgstr ""
+"Prevents merging vertices that belong to different sub meshes (materials).\n"
+"Keeps material boundaries crisp and avoids material bleeding when simplifying multi-material meshes such as avatars."
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.label"
+msgstr "Preserve UV Seams"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.tooltip"
+msgstr ""
+"Locks vertices that lie on a UV seam (coincident in position but discontinuous in UV).\n"
+"Prevents textures from being torn apart across seams during simplification."
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.label"
+msgstr "Suppress Self-Intersection"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.tooltip"
+msgstr ""
+"Constrains the collapsed vertex to the neighborhood of the edge it came from.\n"
+"Suppresses spikes that poke through other surfaces (self-intersection / clipping)."
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.label"
+msgstr "Max Collapse Displacement Factor"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.tooltip"
+msgstr ""
+"The optimal position is rejected when it is farther than this factor times the edge length from the edge midpoint.\n"
+"Smaller values are stricter (less spiking) but may slightly reduce shape accuracy."
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.label"
+msgstr "Preserve Texture Mapping (Attribute-Aware Error)"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.tooltip"
+msgstr ""
+"Includes UV coordinates in the error metric itself (attribute-aware quadric error).\n"
+"Greatly reduces texture distortion at high reduction ratios, at the cost of extra initialization time and memory."
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.label"
+msgstr "UV Error Weight"
+
+msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.tooltip"
+msgstr ""
+"Relative importance of UV preservation versus geometric shape.\n"
+"Larger values preserve the texture mapping more aggressively; smaller values favor geometric accuracy."
+
 msgid "locale:en"
 msgstr "English"

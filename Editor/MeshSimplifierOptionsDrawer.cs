@@ -24,6 +24,12 @@ namespace Meshia.MeshSimplification.Editor
             var enableSmartLinkToggle = root.Q<Toggle>("EnableSmartLinkToggle");
             var smartLinkOptionsGroup = root.Q<GroupBox>("SmartLinkOptionsGroup");
 
+            var constrainOptimalPositionToggle = root.Q<Toggle>("ConstrainOptimalPositionToggle");
+            var constrainOptimalPositionOptionsGroup = root.Q<GroupBox>("ConstrainOptimalPositionOptionsGroup");
+
+            var useAttributeAwareErrorToggle = root.Q<Toggle>("UseAttributeAwareErrorToggle");
+            var attributeAwareErrorOptionsGroup = root.Q<GroupBox>("AttributeAwareErrorOptionsGroup");
+
             var resetOptionsButton = root.Q<Button>("ResetOptionsButton");
 
             LocalizationProvider.LocalizeBindedElements<MeshSimplifierOptions>(root);
@@ -41,6 +47,18 @@ namespace Meshia.MeshSimplification.Editor
             {
                 smartLinkOptionsGroup.style.display = changeEvent.newValue ? DisplayStyle.Flex : DisplayStyle.None;
 
+            });
+
+            constrainOptimalPositionOptionsGroup.style.display = constrainOptimalPositionToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
+            constrainOptimalPositionToggle.RegisterValueChangedCallback(changeEvent =>
+            {
+                constrainOptimalPositionOptionsGroup.style.display = changeEvent.newValue ? DisplayStyle.Flex : DisplayStyle.None;
+            });
+
+            attributeAwareErrorOptionsGroup.style.display = useAttributeAwareErrorToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
+            useAttributeAwareErrorToggle.RegisterValueChangedCallback(changeEvent =>
+            {
+                attributeAwareErrorOptionsGroup.style.display = changeEvent.newValue ? DisplayStyle.Flex : DisplayStyle.None;
             });
 
 
