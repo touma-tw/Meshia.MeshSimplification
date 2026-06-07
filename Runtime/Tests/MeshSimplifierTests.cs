@@ -19,6 +19,22 @@ namespace Meshia.MeshSimplification.Tests
             Object.Destroy(gameObject);
             return mesh;
         }
+
+        // Options matching the original engine behavior (all appearance-preserving features disabled).
+        // The reduction-bound assertions below depend on the aggressive legacy behavior, so they pin
+        // these options explicitly instead of relying on Default (which now enables some of them).
+        static MeshSimplifierOptions CoreEngineOptions
+        {
+            get
+            {
+                var options = MeshSimplifierOptions.Default;
+                options.PreserveSubMeshBoundaries = false;
+                options.PreserveUVSeams = false;
+                options.ConstrainOptimalPosition = false;
+                options.UseAttributeAwareError = false;
+                return options;
+            }
+        }
         [TestCase(PrimitiveType.Sphere)]
         [TestCase(PrimitiveType.Capsule)]
         [TestCase(PrimitiveType.Cylinder)]
@@ -32,7 +48,7 @@ namespace Meshia.MeshSimplification.Tests
                 Value = 0.5f,
             };
             Mesh simplifiedMesh = new();
-            await MeshSimplifier.SimplifyAsync(mesh, target, MeshSimplifierOptions.Default, simplifiedMesh);
+            await MeshSimplifier.SimplifyAsync(mesh, target, CoreEngineOptions, simplifiedMesh);
             Assert.LessOrEqual(simplifiedMesh.vertexCount, mesh.vertexCount * 0.5f);
             Object.Destroy(simplifiedMesh);
         }
@@ -51,7 +67,7 @@ namespace Meshia.MeshSimplification.Tests
 
             using MeshSimplifier meshSimplifier = new(allocator);
 
-            var load = meshSimplifier.ScheduleLoadMeshData(meshData, MeshSimplifierOptions.Default);
+            var load = meshSimplifier.ScheduleLoadMeshData(meshData, CoreEngineOptions);
 
             while (!load.IsCompleted)
             {
@@ -118,9 +134,31 @@ namespace Meshia.MeshSimplification.Tests
                 Value = 0.5f,
             };
             Mesh simplifiedMesh = new();
-            await MeshSimplifier.SimplifyAsync(mesh, target, MeshSimplifierOptions.Default, simplifiedMesh);
+            await MeshSimplifier.SimplifyAsync(mesh, target, CoreEngineOptions, simplifiedMesh);
             Assert.LessOrEqual(simplifiedMesh.vertexCount, mesh.vertexCount * 0.5f);
             Object.Destroy(mesh);
+            Object.Destroy(simplifiedMesh);
+        }
+
+        [TestCase(PrimitiveType.Sphere)]
+        [TestCase(PrimitiveType.Capsule)]
+        [TestCase(PrimitiveType.Cylinder)]
+        public async Task ShouldSimplifyPrimitiveWithDefaultOptions(PrimitiveType type)
+        {
+            var mesh = GetPrimitiveMesh(type);
+
+            MeshSimplificationTarget target = new()
+            {
+                Kind = MeshSimplificationTargetKind.RelativeVertexCount,
+                Value = 0.5f,
+            };
+            Mesh simplifiedMesh = new();
+            await MeshSimplifier.SimplifyAsync(mesh, target, MeshSimplifierOptions.Default, simplifiedMesh);
+
+            // Default enables appearance-preserving options, which may keep the result above the
+            // requested count. Only assert the pipeline produced a valid, non-empty, non-larger mesh.
+            Assert.Greater(simplifiedMesh.vertexCount, 0);
+            Assert.LessOrEqual(simplifiedMesh.vertexCount, mesh.vertexCount);
             Object.Destroy(simplifiedMesh);
         }
     }
