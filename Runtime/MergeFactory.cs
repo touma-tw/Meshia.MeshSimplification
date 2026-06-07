@@ -10,20 +10,36 @@ namespace Meshia.MeshSimplification
         public NativeArray<float3> VertexPositionBuffer;
         public NativeArray<uint> VertexBlendIndicesBuffer;
         public NativeArray<ErrorQuadric> VertexErrorQuadrics;
+        public NativeArray<AttributeErrorQuadric> VertexAttributeErrorQuadrics;
+        public NativeArray<float4> VertexTexCoord0Buffer;
         public NativeParallelMultiHashMap<int, int> VertexContainingTriangles;
         public NativeBitArray VertexIsBorderEdgeBits;
+        public NativeBitArray VertexIsUVSeamBits;
         public NativeBitArray PreserveBorderEdgesBoneIndices;
         public NativeArray<float3> TriangleNormals;
+        /// <summary>
+        /// Per vertex bit mask of the sub meshes (materials) the vertex belongs to.
+        /// Empty when sub mesh boundary preservation is disabled.
+        /// </summary>
+        public NativeArray<uint> VertexContainingSubMeshIndices;
         public bool PreserveBorderEdges;
         public bool PreserveSurfaceCurvature;
+        public bool PreserveSubMeshBoundaries;
+        public bool PreserveUVSeams;
+        public bool ConstrainOptimalPosition;
+        public float MaxCollapseDisplacementFactor;
+        public bool UseAttributeAwareError;
+        public float UvErrorWeight;
 
         PreservedVertexPredicator PreservedVertexPredicator => new()
         {
             VertexBlendIndicesBuffer = VertexBlendIndicesBuffer,
             VertexIsBorderEdgeBits = VertexIsBorderEdgeBits,
+            VertexIsUVSeamBits = VertexIsUVSeamBits,
             PreserveBorderEdgesBoneIndices = PreserveBorderEdgesBoneIndices,
             VertexBoneCount = VertexBlendIndicesBuffer.Length / VertexPositionBuffer.Length,
             PreserveBorderEdges = PreserveBorderEdges,
+            PreserveUVSeams = PreserveUVSeams,
         };
 
         [BurstCompile]
@@ -33,10 +49,32 @@ namespace Meshia.MeshSimplification
             public static readonly ProfilerMarker ComputeCurvatureError = new(nameof(ComputeCurvatureError));
         }
 
-        public bool TryComputeMerge(int2 vertices, out float3 position, out float cost)
+        public bool TryComputeMerge(int2 vertices, out float3 position, out float2 optimalUv, out float cost)
         {
             using (ProfilerMarkers.TryComputeMerge.Auto())
             {
+                optimalUv = default;
+
+                // Material boundary lock: never merge vertices that belong to a different set of
+                // sub meshes (materials). Merging across a material boundary corrupts the per sub mesh
+                // vertex ranges reconstructed in WriteToMeshDataJob (the bit mask is not updated after a merge)
+                // and bleeds materials across their boundary.
+                if (PreserveSubMeshBoundaries
+                    && VertexContainingSubMeshIndices.Length != 0
+                    && VertexContainingSubMeshIndices[vertices.x] != VertexContainingSubMeshIndices[vertices.y])
+                {
+                    position = float.NaN;
+                    optimalUv = float.NaN;
+                    cost = float.PositiveInfinity;
+                    return false;
+                }
+
+                // Attribute aware path: include UV0 in the error metric and solve position + UV together.
+                if (UseAttributeAwareError && UvErrorWeight > 0f && VertexAttributeErrorQuadrics.Length != 0)
+                {
+                    return TryComputeMergeAttributeAware(vertices, out position, out optimalUv, out cost);
+                }
+
                 var q = VertexErrorQuadrics[vertices.x] + VertexErrorQuadrics[vertices.y];
 
                 var positionX = VertexPositionBuffer[vertices.x];
@@ -66,18 +104,37 @@ namespace Meshia.MeshSimplification
                 }
 
                 var determinant = q.Determinant1();
-                if (determinant != 0)
+                var hasOptimalPosition = determinant != 0;
+                if (hasOptimalPosition)
                 {
-                    position = new float3
+                    var optimalPosition = new float3
                     {
                         x = -1 / determinant * q.Determinant2(),
                         y = 1 / determinant * q.Determinant3(),
                         z = -1 / determinant * q.Determinant4(),
                     };
 
-                    goto ComputeVertexError;
+                    // Anti self-intersection: the unconstrained quadric optimum can fly far away from the
+                    // collapsed edge (especially on flat or near singular regions), producing spikes that poke
+                    // through other surfaces. Reject it when it lands outside the local neighborhood of the edge
+                    // and fall back to the endpoint/midpoint candidates instead.
+                    if (ConstrainOptimalPosition)
+                    {
+                        var edgeMidpoint = (positionX + positionY) * 0.5f;
+                        var maxDisplacement = MaxCollapseDisplacementFactor * math.distance(positionX, positionY);
+                        if (math.distance(optimalPosition, edgeMidpoint) > maxDisplacement)
+                        {
+                            hasOptimalPosition = false;
+                        }
+                    }
+
+                    if (hasOptimalPosition)
+                    {
+                        position = optimalPosition;
+                        goto ComputeVertexError;
+                    }
                 }
-                else
+
                 {
                     var positionZ = (positionX + positionY) * 0.5f;
                     var errorX = q.ComputeError(positionX);
@@ -127,6 +184,97 @@ namespace Meshia.MeshSimplification
             }
 
         }
+        bool TryComputeMergeAttributeAware(int2 vertices, out float3 position, out float2 optimalUv, out float cost)
+        {
+            var q = VertexAttributeErrorQuadrics[vertices.x] + VertexAttributeErrorQuadrics[vertices.y];
+            var weight = UvErrorWeight;
+
+            var positionX = VertexPositionBuffer[vertices.x];
+            var positionY = VertexPositionBuffer[vertices.y];
+            var uvX = VertexTexCoord0Buffer.Length != 0 ? VertexTexCoord0Buffer[vertices.x].xy : float2.zero;
+            var uvY = VertexTexCoord0Buffer.Length != 0 ? VertexTexCoord0Buffer[vertices.y].xy : float2.zero;
+
+            var preservedVertexPredicator = PreservedVertexPredicator;
+            var preserveX = preservedVertexPredicator.IsPreserved(vertices.x);
+            var preserveY = preservedVertexPredicator.IsPreserved(vertices.y);
+
+            if (preserveX && preserveY)
+            {
+                position = float.NaN;
+                optimalUv = float.NaN;
+                cost = float.PositiveInfinity;
+                return false;
+            }
+            else if (preserveX)
+            {
+                position = positionX;
+                optimalUv = uvX;
+                cost = q.ComputeError(positionX, uvX * weight) + CurvatureError(vertices);
+                return true;
+            }
+            else if (preserveY)
+            {
+                position = positionY;
+                optimalUv = uvY;
+                cost = q.ComputeError(positionY, uvY * weight) + CurvatureError(vertices);
+                return true;
+            }
+
+            var solved = q.TrySolveOptimal(out var solvedPosition, out var solvedWeightedUv);
+
+            // Anti self-intersection: reject the optimum if it flies away from the collapsed edge.
+            if (solved && ConstrainOptimalPosition)
+            {
+                var edgeMidpoint = (positionX + positionY) * 0.5f;
+                var maxDisplacement = MaxCollapseDisplacementFactor * math.distance(positionX, positionY);
+                if (math.distance(solvedPosition, edgeMidpoint) > maxDisplacement)
+                {
+                    solved = false;
+                }
+            }
+
+            if (solved)
+            {
+                position = solvedPosition;
+                optimalUv = solvedWeightedUv / weight;
+                cost = q.ComputeError(solvedPosition, solvedWeightedUv);
+            }
+            else
+            {
+                // Fall back to the endpoint / midpoint candidates evaluated with their own UVs.
+                var midpoint = (positionX + positionY) * 0.5f;
+                var uvMid = (uvX + uvY) * 0.5f;
+
+                var errorX = q.ComputeError(positionX, uvX * weight);
+                var errorY = q.ComputeError(positionY, uvY * weight);
+                var errorMid = q.ComputeError(midpoint, uvMid * weight);
+
+                if (errorX <= errorY && errorX <= errorMid)
+                {
+                    position = positionX;
+                    optimalUv = uvX;
+                    cost = errorX;
+                }
+                else if (errorY <= errorMid)
+                {
+                    position = positionY;
+                    optimalUv = uvY;
+                    cost = errorY;
+                }
+                else
+                {
+                    position = midpoint;
+                    optimalUv = uvMid;
+                    cost = errorMid;
+                }
+            }
+
+            cost += CurvatureError(vertices);
+            return true;
+        }
+
+        float CurvatureError(int2 vertices) => PreserveSurfaceCurvature ? ComputeCurvatureError(vertices) : 0f;
+
         float ComputeCurvatureError(int2 vertices)
         {
 

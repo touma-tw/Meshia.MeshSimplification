@@ -21,6 +21,16 @@ namespace Meshia.MeshSimplification
             VertexLinkMinNormalDot = 0.95f,
             VertexLinkColorDistance = 0.01f,
             VertexLinkUvDistance = 0.001f,
+
+            // Appearance-preserving improvements (enabled by default; set to false to restore legacy behavior).
+            PreserveSubMeshBoundaries = true,
+            // UV seam locking is the most reduction-limiting option (it can keep the result well above the
+            // requested count), so it is opt-in. Texture mapping is still protected softly by UseAttributeAwareError.
+            PreserveUVSeams = false,
+            ConstrainOptimalPosition = true,
+            MaxCollapseDisplacementFactor = 2f,
+            UseAttributeAwareError = true,
+            UvErrorWeight = 1f,
         };
 
         /// <summary>
@@ -57,6 +67,45 @@ namespace Meshia.MeshSimplification
         [Range(0, 1.41421356237f)]
         public float VertexLinkUvDistance;
 
+        /// <summary>
+        /// Prevents merging vertices that belong to different sub meshes (materials). <br/>
+        /// Keeps material boundaries crisp and avoids material bleeding when simplifying multi-material meshes (e.g. avatars).
+        /// </summary>
+        [Tooltip("Prevents merging vertices that belong to different sub meshes (materials).\n" +
+            "Keeps material boundaries crisp and avoids material bleeding when simplifying multi-material meshes.")]
+        public bool PreserveSubMeshBoundaries;
+        /// <summary>
+        /// Locks vertices that lie on a UV seam (coincident in position but discontinuous in UV) so textures are not torn apart.
+        /// </summary>
+        [Tooltip("Locks vertices that lie on a UV seam (coincident in position but discontinuous in UV) so textures are not torn apart.")]
+        public bool PreserveUVSeams;
+        /// <summary>
+        /// Constrains the optimal collapse position to the neighborhood of the collapsed edge, suppressing spikes that poke through other surfaces (self-intersection).
+        /// </summary>
+        [Tooltip("Constrains the optimal collapse position to the neighborhood of the collapsed edge, suppressing spikes that poke through other surfaces.")]
+        public bool ConstrainOptimalPosition;
+        /// <summary>
+        /// When <see cref="ConstrainOptimalPosition"/> is enabled, the optimal position is rejected if it is farther than this factor times the edge length from the edge midpoint.
+        /// </summary>
+        [Tooltip("When Constrain Optimal Position is enabled, the optimal position is rejected if it is farther than this factor times the edge length from the edge midpoint.")]
+        [Min(0)]
+        public float MaxCollapseDisplacementFactor;
+        /// <summary>
+        /// Includes UV coordinates in the error metric itself (attribute-aware quadric error). <br/>
+        /// Greatly reduces texture distortion at high reduction ratios at the cost of extra initialization time and memory.
+        /// </summary>
+        [Tooltip("Includes UV coordinates in the error metric itself (attribute-aware quadric error).\n" +
+            "Greatly reduces texture distortion at high reduction ratios at the cost of extra initialization time and memory.")]
+        public bool UseAttributeAwareError;
+        /// <summary>
+        /// Relative importance of UV preservation versus geometric shape when <see cref="UseAttributeAwareError"/> is enabled. <br/>
+        /// Larger values preserve the texture mapping more aggressively; smaller values favor geometric accuracy.
+        /// </summary>
+        [Tooltip("Relative importance of UV preservation versus geometric shape when Use Attribute Aware Error is enabled.\n" +
+            "Larger values preserve the texture mapping more aggressively; smaller values favor geometric accuracy.")]
+        [Min(0)]
+        public float UvErrorWeight;
+
 
         public readonly override bool Equals(object obj)
         {
@@ -73,12 +122,34 @@ namespace Meshia.MeshSimplification
                    VertexLinkDistance == other.VertexLinkDistance &&
                    VertexLinkMinNormalDot == other.VertexLinkMinNormalDot &&
                    VertexLinkColorDistance == other.VertexLinkColorDistance &&
-                   VertexLinkUvDistance == other.VertexLinkUvDistance;
+                   VertexLinkUvDistance == other.VertexLinkUvDistance &&
+                   PreserveSubMeshBoundaries == other.PreserveSubMeshBoundaries &&
+                   PreserveUVSeams == other.PreserveUVSeams &&
+                   ConstrainOptimalPosition == other.ConstrainOptimalPosition &&
+                   MaxCollapseDisplacementFactor == other.MaxCollapseDisplacementFactor &&
+                   UseAttributeAwareError == other.UseAttributeAwareError &&
+                   UvErrorWeight == other.UvErrorWeight;
         }
 
         public readonly override int GetHashCode()
         {
-            return HashCode.Combine(PreserveBorderEdges, PreserveSurfaceCurvature, MinNormalDot);
+            var hashCode = new HashCode();
+            hashCode.Add(PreserveBorderEdges);
+            hashCode.Add(PreserveSurfaceCurvature);
+            hashCode.Add(UseBarycentricCoordinateInterpolation);
+            hashCode.Add(EnableSmartLink);
+            hashCode.Add(MinNormalDot);
+            hashCode.Add(VertexLinkDistance);
+            hashCode.Add(VertexLinkMinNormalDot);
+            hashCode.Add(VertexLinkColorDistance);
+            hashCode.Add(VertexLinkUvDistance);
+            hashCode.Add(PreserveSubMeshBoundaries);
+            hashCode.Add(PreserveUVSeams);
+            hashCode.Add(ConstrainOptimalPosition);
+            hashCode.Add(MaxCollapseDisplacementFactor);
+            hashCode.Add(UseAttributeAwareError);
+            hashCode.Add(UvErrorWeight);
+            return hashCode.ToHashCode();
         }
 
         public static bool operator ==(MeshSimplifierOptions left, MeshSimplifierOptions right)

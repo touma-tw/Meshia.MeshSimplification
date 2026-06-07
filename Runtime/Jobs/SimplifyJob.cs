@@ -47,9 +47,11 @@ namespace Meshia.MeshSimplification
         public NativeArray<int3> Triangles;
         public NativeArray<int> VertexVersions;
         public NativeArray<ErrorQuadric> VertexErrorQuadrics;
+        public NativeArray<AttributeErrorQuadric> VertexAttributeErrorQuadrics;
         public NativeParallelMultiHashMap<int, int> VertexContainingTriangles;
         public NativeParallelMultiHashMap<int, int> VertexMergeOpponentVertices;
         public NativeBitArray VertexIsBorderEdgeBits;
+        public NativeBitArray VertexIsUVSeamBits;
         public NativeMinPriorityQueue<VertexMerge> VertexMerges;
         public MeshSimplifierOptions Options;
 
@@ -72,13 +74,23 @@ namespace Meshia.MeshSimplification
             VertexPositionBuffer = VertexPositionBuffer,
             VertexBlendIndicesBuffer = VertexBlendIndicesBuffer,
             VertexErrorQuadrics = VertexErrorQuadrics,
+            VertexAttributeErrorQuadrics = VertexAttributeErrorQuadrics,
+            VertexTexCoord0Buffer = VertexTexCoord0Buffer,
             TriangleNormals = TriangleNormals,
             VertexContainingTriangles = VertexContainingTriangles,
 
             VertexIsBorderEdgeBits = VertexIsBorderEdgeBits,
+            VertexIsUVSeamBits = VertexIsUVSeamBits,
             PreserveBorderEdgesBoneIndices = PreserveBorderEdgesBoneIndices,
+            VertexContainingSubMeshIndices = Options.PreserveSubMeshBoundaries ? VertexContainingSubMeshIndices : default,
             PreserveBorderEdges = Options.PreserveBorderEdges,
             PreserveSurfaceCurvature = Options.PreserveSurfaceCurvature,
+            PreserveSubMeshBoundaries = Options.PreserveSubMeshBoundaries,
+            PreserveUVSeams = Options.PreserveUVSeams,
+            ConstrainOptimalPosition = Options.ConstrainOptimalPosition,
+            MaxCollapseDisplacementFactor = Options.MaxCollapseDisplacementFactor,
+            UseAttributeAwareError = Options.UseAttributeAwareError,
+            UvErrorWeight = Options.UvErrorWeight,
 
         };
 
@@ -86,9 +98,11 @@ namespace Meshia.MeshSimplification
         {
             VertexBlendIndicesBuffer = VertexBlendIndicesBuffer,
             VertexIsBorderEdgeBits = VertexIsBorderEdgeBits,
+            VertexIsUVSeamBits = VertexIsUVSeamBits,
             PreserveBorderEdgesBoneIndices = PreserveBorderEdgesBoneIndices,
             VertexBoneCount = VertexBlendIndicesBuffer.Length / VertexPositionBuffer.Length,
             PreserveBorderEdges = Options.PreserveBorderEdges,
+            PreserveUVSeams = Options.PreserveUVSeams,
         };
 
         public void Execute()
@@ -267,8 +281,22 @@ namespace Meshia.MeshSimplification
 
 
                 var originalTriangleNormal = TriangleNormals[vertexAContainingTriangleIndex];
-                var triangleNormalAfterMerge = math.cross(triangleVertexPositions.c1 - triangleVertexPositions.c0, triangleVertexPositions.c2 - triangleVertexPositions.c0);
-                triangleNormalAfterMerge = math.normalize(triangleNormalAfterMerge);
+                var crossAfterMerge = math.cross(triangleVertexPositions.c1 - triangleVertexPositions.c0, triangleVertexPositions.c2 - triangleVertexPositions.c0);
+
+                // Anti self-intersection: reject collapses that nearly flatten a triangle into a sliver
+                // (its area shrinks toward zero). Such near degenerate triangles render as visible
+                // cracks / self-intersection and produce unstable normals.
+                if (Options.ConstrainOptimalPosition)
+                {
+                    var crossBeforeMerge = math.cross(triangleVertexPositions.c1 - VertexPositionBuffer[vertex], triangleVertexPositions.c2 - VertexPositionBuffer[vertex]);
+                    const float degenerateAreaRatioSq = 1e-3f * 1e-3f;
+                    if (math.lengthsq(crossAfterMerge) < math.lengthsq(crossBeforeMerge) * degenerateAreaRatioSq)
+                    {
+                        return true;
+                    }
+                }
+
+                var triangleNormalAfterMerge = math.normalize(crossAfterMerge);
                 var dot = math.dot(originalTriangleNormal, triangleNormalAfterMerge);
 
                 if (dot < Options.MinNormalDot)
@@ -331,6 +359,15 @@ namespace Meshia.MeshSimplification
                 if (!(shouldPreserveVertexA | shouldPreserveVertexB))
                 {
                     MergeVertexAttributeData(vertexA, vertexB, merge.Position);
+
+                    // Attribute aware solve already produced the UV that minimizes texture distortion;
+                    // use it instead of the linear/barycentric blend.
+                    if (Options.UseAttributeAwareError && Options.UvErrorWeight > 0f && VertexTexCoord0Buffer.Length != 0)
+                    {
+                        var mergedTexCoord0 = VertexTexCoord0Buffer[vertexA];
+                        mergedTexCoord0.xy = merge.OptimalUv;
+                        VertexTexCoord0Buffer[vertexA] = mergedTexCoord0;
+                    }
                 }
 
                 VertexIsBorderEdgeBits.Set(vertexA, containsBorderEdge);
@@ -339,6 +376,10 @@ namespace Meshia.MeshSimplification
 
 
                 VertexErrorQuadrics.ElementAt(vertexA) += VertexErrorQuadrics[vertexB];
+                if (Options.UseAttributeAwareError && VertexAttributeErrorQuadrics.Length != 0)
+                {
+                    VertexAttributeErrorQuadrics.ElementAt(vertexA) += VertexAttributeErrorQuadrics[vertexB];
+                }
 
                 VertexVersions.ElementAt(vertexA)++;
 
@@ -417,7 +458,7 @@ namespace Meshia.MeshSimplification
                     {
                         foreach (var vertexAOpponentVertex in VertexMergeOpponentVertices.GetValuesForKey(vertexA))
                         {
-                            if (MergeFactory.TryComputeMerge(new(vertexA, vertexAOpponentVertex), out var position, out var cost))
+                            if (MergeFactory.TryComputeMerge(new(vertexA, vertexAOpponentVertex), out var position, out var optimalUv, out var cost))
                             {
                                 VertexMerges.Enqueue(new VertexMerge
                                 {
@@ -426,6 +467,7 @@ namespace Meshia.MeshSimplification
                                     VertexAVersion = VertexVersions[vertexA],
                                     VertexBVersion = VertexVersions[vertexAOpponentVertex],
                                     Position = position,
+                                    OptimalUv = optimalUv,
                                     Cost = cost,
                                 });
                             }
@@ -454,7 +496,7 @@ namespace Meshia.MeshSimplification
                                     }
                                 }
 
-                                if (MergeFactory.TryComputeMerge(new(vertexA, vertexBOpponentVertex), out var position, out var cost))
+                                if (MergeFactory.TryComputeMerge(new(vertexA, vertexBOpponentVertex), out var position, out var optimalUv, out var cost))
                                 {
                                     VertexMerges.Enqueue(new VertexMerge
                                     {
@@ -463,6 +505,7 @@ namespace Meshia.MeshSimplification
                                         VertexAVersion = VertexVersions[vertexA],
                                         VertexBVersion = VertexVersions[vertexBOpponentVertex],
                                         Position = position,
+                                        OptimalUv = optimalUv,
                                         Cost = cost,
                                     });
                                     VertexMergeOpponentVertices.Add(vertexA, vertexBOpponentVertex);
@@ -780,11 +823,18 @@ namespace Meshia.MeshSimplification
     {
         public NativeArray<uint> VertexBlendIndicesBuffer;
         public NativeBitArray VertexIsBorderEdgeBits;
+        public NativeBitArray VertexIsUVSeamBits;
         public NativeBitArray PreserveBorderEdgesBoneIndices;
         public int VertexBoneCount;
         public bool PreserveBorderEdges;
+        public bool PreserveUVSeams;
         public readonly bool IsPreserved(int vertexIndex)
         {
+            // UV seam vertices are duplicated at texture seams; collapsing across them smears the texture.
+            if (PreserveUVSeams && VertexIsUVSeamBits.Length != 0 && VertexIsUVSeamBits.IsSet(vertexIndex))
+            {
+                return true;
+            }
             if (VertexIsBorderEdgeBits.IsSet(vertexIndex))
             {
                 if (PreserveBorderEdges)

@@ -40,6 +40,7 @@ namespace Meshia.MeshSimplification
         NativeList<uint> VertexContainingSubMeshIndices;
 
         NativeList<ErrorQuadric> VertexErrorQuadrics;
+        NativeList<AttributeErrorQuadric> VertexAttributeErrorQuadrics;
 
         NativeList<int> VertexVersions;
 
@@ -51,6 +52,7 @@ namespace Meshia.MeshSimplification
 
         NativeBitArray VertexIsDiscardedBits;
         NativeBitArray VertexIsBorderEdgeBits;
+        NativeBitArray VertexIsUVSeamBits;
         NativeBitArray TriangleIsDiscardedBits;
 
         NativeHashSet<int2> SmartLinks;
@@ -357,6 +359,7 @@ namespace Meshia.MeshSimplification
             VertexContainingSubMeshIndices = new(allocator);
 
             VertexErrorQuadrics = new(allocator);
+            VertexAttributeErrorQuadrics = new(allocator);
 
 
             VertexVersions = new(allocator);
@@ -369,6 +372,7 @@ namespace Meshia.MeshSimplification
 
             VertexIsDiscardedBits = new(0, allocator, NativeArrayOptions.UninitializedMemory);
             VertexIsBorderEdgeBits = new(0, allocator, NativeArrayOptions.UninitializedMemory);
+            VertexIsUVSeamBits = new(0, allocator, NativeArrayOptions.UninitializedMemory);
             TriangleIsDiscardedBits = new(0, allocator, NativeArrayOptions.UninitializedMemory);
 
             SmartLinks = new(0, allocator);
@@ -431,6 +435,9 @@ namespace Meshia.MeshSimplification
             var constructEdges = ScheduleConstructEdges(out var edges, Triangles, constructTriangles, Allocator);
 
             var constructVertexIsDiscardedBits = ScheduleInitializeVertexIsDiscardedBits(meshData, dependency, constructVertexContainingTrianglesAndTriangleDiscardedBits);
+            var markUVSeamVertices = options.PreserveUVSeams
+                ? ScheduleMarkUVSeamVertices(meshData, options, dependency, constructVertexPositionBuffer, constructVertexTexcoord0Buffer, constructVertexIsDiscardedBits)
+                : new JobHandle();
             var collectSmartLinks = options.EnableSmartLink
                 ? ScheduleCollectSmartLinks(
                     meshData,
@@ -477,11 +484,15 @@ namespace Meshia.MeshSimplification
 
             var constructVertexErrorQuadrics = ScheduleInitializeVertexErrorQuadrics(meshData, edges, triangleErrorQuadrics, dependency, constructVertexPositionBuffer, constructTriangles, constructVertexContainingTrianglesAndTriangleDiscardedBits, constructEdges, constructTriangleNormalsAndErrorQuadrics);
 
-            edges.Dispose(JobHandle.CombineDependencies(constructMergePairs, constructVertexIsBorderEdgeBits, constructVertexErrorQuadrics));
+            var constructVertexAttributeErrorQuadrics = options.UseAttributeAwareError
+                ? ScheduleInitializeVertexAttributeErrorQuadrics(meshData, edges, options, dependency, constructVertexPositionBuffer, constructVertexTexcoord0Buffer, constructTriangles, constructVertexContainingTrianglesAndTriangleDiscardedBits, constructEdges)
+                : new JobHandle();
+
+            edges.Dispose(stackalloc[] { constructMergePairs, constructVertexIsBorderEdgeBits, constructVertexErrorQuadrics, constructVertexAttributeErrorQuadrics }.CombineDependencies());
 
             triangleErrorQuadrics.Dispose(constructVertexErrorQuadrics);
 
-            var constructVertexMerges = ScheduleInitializeVertexMerges(mergePairs, preserveBorderEdgesBoneIndices, constructVertexPositionBuffer, constructVertexBlendIndicesBuffer, constructVertexErrorQuadrics, constructTriangleNormalsAndErrorQuadrics, constructVertexContainingTrianglesAndTriangleDiscardedBits, constructVertexIsBorderEdgeBits, constructMergePairs);
+            var constructVertexMerges = ScheduleInitializeVertexMerges(mergePairs, preserveBorderEdgesBoneIndices, constructVertexPositionBuffer, constructVertexBlendIndicesBuffer, constructVertexErrorQuadrics, constructTriangleNormalsAndErrorQuadrics, constructVertexContainingTrianglesAndTriangleDiscardedBits, constructVertexIsBorderEdgeBits, constructMergePairs, collectVertexContainingSubMeshIndices, markUVSeamVertices, constructVertexAttributeErrorQuadrics, constructVertexTexcoord0Buffer);
 
             mergePairs.Dispose(constructVertexMerges);
 
@@ -513,6 +524,7 @@ namespace Meshia.MeshSimplification
                 initializeVertexVersions,
 
                 constructVertexErrorQuadrics,
+                constructVertexAttributeErrorQuadrics,
 
                 constructTriangles,
                 constructTriangleNormalsAndErrorQuadrics,
@@ -523,6 +535,7 @@ namespace Meshia.MeshSimplification
                 constructVertexIsBorderEdgeBits,
 
                 collectSmartLinks,
+                markUVSeamVertices,
                 constructVertexMerges,
 
             }.CombineDependencies();
@@ -586,10 +599,12 @@ namespace Meshia.MeshSimplification
                 TriangleNormals = TriangleNormals.AsDeferredJobArray(),
                 VertexContainingTriangles = VertexContainingTriangles,
                 VertexErrorQuadrics = VertexErrorQuadrics.AsDeferredJobArray(),
+                VertexAttributeErrorQuadrics = VertexAttributeErrorQuadrics.AsDeferredJobArray(),
                 VertexMergeOpponentVertices = VertexMergeOpponentVertices,
                 DiscardedTriangle = TriangleIsDiscardedBits,
                 DiscardedVertex = VertexIsDiscardedBits,
                 VertexIsBorderEdgeBits = VertexIsBorderEdgeBits,
+                VertexIsUVSeamBits = VertexIsUVSeamBits,
                 Options = Options,
                 VertexMerges = VertexMerges,
                 PreserveBorderEdgesBoneIndices = preserveBorderEdgesBoneIndices,
@@ -668,6 +683,7 @@ namespace Meshia.MeshSimplification
                 VertexContainingSubMeshIndices.Dispose(inputDeps),
 
                 VertexErrorQuadrics.Dispose(inputDeps),
+                VertexAttributeErrorQuadrics.Dispose(inputDeps),
                 VertexVersions.Dispose(inputDeps),
                 Triangles.Dispose(inputDeps),
                 TriangleNormals.Dispose(inputDeps),
@@ -676,6 +692,7 @@ namespace Meshia.MeshSimplification
                 VertexIsDiscardedBits.Dispose(inputDeps),
 
                 VertexIsBorderEdgeBits.Dispose(inputDeps),
+                VertexIsUVSeamBits.Dispose(inputDeps),
                 TriangleIsDiscardedBits.Dispose (inputDeps),
                 SmartLinks.Dispose(inputDeps),
                 VertexMerges.Dispose(inputDeps),
@@ -706,6 +723,7 @@ namespace Meshia.MeshSimplification
             VertexContainingSubMeshIndices.Dispose();
 
             VertexErrorQuadrics.Dispose();
+            VertexAttributeErrorQuadrics.Dispose();
             VertexVersions.Dispose();
             Triangles.Dispose();
             TriangleNormals.Dispose();
@@ -714,6 +732,7 @@ namespace Meshia.MeshSimplification
             VertexIsDiscardedBits.Dispose();
 
             VertexIsBorderEdgeBits.Dispose();
+            VertexIsUVSeamBits.Dispose();
             TriangleIsDiscardedBits.Dispose();
             SmartLinks.Dispose();
             VertexMerges.Dispose();
@@ -912,6 +931,32 @@ namespace Meshia.MeshSimplification
             }.Schedule(JobHandle.CombineDependencies(meshDependency, edgesDependency));
         }
 
+        JobHandle ScheduleMarkUVSeamVertices(
+            Mesh.MeshData mesh,
+            MeshSimplifierOptions options,
+            JobHandle meshDependency,
+            JobHandle vertexPositionBufferDependency,
+            JobHandle vertexTexCoord0BufferDependency,
+            JobHandle vertexIsDiscardedBitsDependency)
+        {
+            return new MarkUVSeamVerticesJob
+            {
+                Mesh = mesh,
+                VertexPositionBuffer = VertexPositionBuffer.AsDeferredJobArray(),
+                VertexTexCoord0Buffer = VertexTexCoord0Buffer.AsDeferredJobArray(),
+                VertexIsDiscardedBits = VertexIsDiscardedBits,
+                PositionEpsilon = math.max(options.VertexLinkDistance, 1e-6f),
+                UvThreshold = options.VertexLinkUvDistance,
+                VertexIsUVSeamBits = VertexIsUVSeamBits,
+            }.Schedule(stackalloc[]
+            {
+                meshDependency,
+                vertexPositionBufferDependency,
+                vertexTexCoord0BufferDependency,
+                vertexIsDiscardedBitsDependency,
+            }.CombineDependencies());
+        }
+
 
         JobHandle ScheduleInitializeTriangleNormalsAndTriangleErrorQuadrics(
             Mesh.MeshData mesh,
@@ -995,6 +1040,77 @@ namespace Meshia.MeshSimplification
 
             return computeVertexErrorQuadricsJob;
         }
+
+        JobHandle ScheduleInitializeVertexAttributeErrorQuadrics(
+            Mesh.MeshData mesh,
+            NativeHashSet<int2> edges,
+            MeshSimplifierOptions options,
+            JobHandle meshDependency,
+            JobHandle vertexPositionBufferDependency,
+            JobHandle vertexTexCoord0BufferDependency,
+            JobHandle trianglesDependency,
+            JobHandle vertexContainingTrianglesDependency,
+            JobHandle edgesDependency)
+        {
+            NativeList<AttributeErrorQuadric> triangleAttributeErrorQuadrics = new(Allocator);
+
+            var initializeTriangleAttributeErrorQuadricsJob = new InitializeTriangleListJob<AttributeErrorQuadric>
+            {
+                MeshData = mesh,
+                Options = NativeArrayOptions.UninitializedMemory,
+                Buffer = triangleAttributeErrorQuadrics,
+            }.Schedule(meshDependency);
+
+            var computeTriangleAttributeErrorQuadricsJob = new ComputeTriangleAttributeErrorQuadricsJob
+            {
+                VertexPositionBuffer = VertexPositionBuffer.AsDeferredJobArray(),
+                VertexTexCoord0Buffer = VertexTexCoord0Buffer.AsDeferredJobArray(),
+                Triangles = Triangles.AsDeferredJobArray(),
+                UvWeight = options.UvErrorWeight,
+                TriangleAttributeErrorQuadrics = triangleAttributeErrorQuadrics.AsDeferredJobArray(),
+            }.Schedule(
+                Triangles,
+                JobsUtility.CacheLineSize,
+                stackalloc[]
+                {
+                    vertexPositionBufferDependency,
+                    vertexTexCoord0BufferDependency,
+                    trianglesDependency,
+                    initializeTriangleAttributeErrorQuadricsJob,
+                }.CombineDependencies());
+
+            var initializeVertexAttributeErrorQuadricsJob = new InitializeVertexListJob<AttributeErrorQuadric>
+            {
+                MeshData = mesh,
+                Options = NativeArrayOptions.UninitializedMemory,
+                Buffer = VertexAttributeErrorQuadrics,
+            }.Schedule(meshDependency);
+
+            var computeVertexAttributeErrorQuadricsJob = new ComputeVertexAttributeErrorQuadricsJob
+            {
+                VertexPositionBuffer = VertexPositionBuffer.AsDeferredJobArray(),
+                Triangles = Triangles.AsDeferredJobArray(),
+                VertexContainingTriangles = VertexContainingTriangles,
+                Edges = edges,
+                TriangleAttributeErrorQuadrics = triangleAttributeErrorQuadrics.AsDeferredJobArray(),
+                VertexAttributeErrorQuadrics = VertexAttributeErrorQuadrics.AsDeferredJobArray(),
+            }.Schedule(
+                VertexAttributeErrorQuadrics,
+                JobsUtility.CacheLineSize,
+                stackalloc[]
+                {
+                    vertexPositionBufferDependency,
+                    trianglesDependency,
+                    vertexContainingTrianglesDependency,
+                    edgesDependency,
+                    computeTriangleAttributeErrorQuadricsJob,
+                    initializeVertexAttributeErrorQuadricsJob,
+                }.CombineDependencies());
+
+            triangleAttributeErrorQuadrics.Dispose(computeVertexAttributeErrorQuadricsJob);
+            return computeVertexAttributeErrorQuadricsJob;
+        }
+
         JobHandle ScheduleInitializeVertexMerges(
             NativeList<int2> edges,
             NativeBitArray preserveBorderEdgesBoneIndices,
@@ -1004,7 +1120,11 @@ namespace Meshia.MeshSimplification
             JobHandle triangleNormalsDependency,
             JobHandle vertexContainingTrianglesDependency,
             JobHandle vertexIsBorderEdgeBitsDependency,
-            JobHandle edgesDependency)
+            JobHandle edgesDependency,
+            JobHandle vertexContainingSubMeshIndicesDependency,
+            JobHandle vertexIsUVSeamBitsDependency,
+            JobHandle vertexAttributeErrorQuadricsDependency,
+            JobHandle vertexTexCoord0BufferDependency)
         {
             NativeList<VertexMerge> unorderedDirtyVertexMerges = new(Allocator);
             var initializeVertexMergesJob = new InitializeUnorderedDirtyVertexMergesJob
@@ -1017,15 +1137,25 @@ namespace Meshia.MeshSimplification
             {
                 VertexPositionBuffer = VertexPositionBuffer.AsDeferredJobArray(),
                 VertexErrorQuadrics = VertexErrorQuadrics.AsDeferredJobArray(),
+                VertexAttributeErrorQuadrics = VertexAttributeErrorQuadrics.AsDeferredJobArray(),
+                VertexTexCoord0Buffer = VertexTexCoord0Buffer.AsDeferredJobArray(),
                 TriangleNormals = TriangleNormals.AsDeferredJobArray(),
                 VertexContainingTriangles = VertexContainingTriangles,
                 VertexIsBorderEdgeBits = VertexIsBorderEdgeBits,
+                VertexIsUVSeamBits = VertexIsUVSeamBits,
                 Edges = edges.AsDeferredJobArray(),
                 UnorderedDirtyVertexMerges = unorderedDirtyVertexMerges.AsDeferredJobArray(),
-                
+
                 PreserveBorderEdges = Options.PreserveBorderEdges,
                 PreserveSurfaceCurvature = Options.PreserveSurfaceCurvature,
+                PreserveSubMeshBoundaries = Options.PreserveSubMeshBoundaries,
+                PreserveUVSeams = Options.PreserveUVSeams,
+                ConstrainOptimalPosition = Options.ConstrainOptimalPosition,
+                MaxCollapseDisplacementFactor = Options.MaxCollapseDisplacementFactor,
+                UseAttributeAwareError = Options.UseAttributeAwareError,
+                UvErrorWeight = Options.UvErrorWeight,
                 VertexBlendIndicesBuffer = VertexBlendIndicesBuffer.AsDeferredJobArray(),
+                VertexContainingSubMeshIndices = VertexContainingSubMeshIndices.AsDeferredJobArray(),
                 PreserveBorderEdgesBoneIndices = preserveBorderEdgesBoneIndices,
             }.Schedule(edges, JobsUtility.CacheLineSize,
             stackalloc[]
@@ -1037,6 +1167,10 @@ namespace Meshia.MeshSimplification
                 vertexContainingTrianglesDependency,
                 vertexIsBorderEdgeBitsDependency,
                 edgesDependency,
+                vertexContainingSubMeshIndicesDependency,
+                vertexIsUVSeamBitsDependency,
+                vertexAttributeErrorQuadricsDependency,
+                vertexTexCoord0BufferDependency,
                 initializeVertexMergesJob,
             }.CombineDependencies());
             var collectVertexMergeOpponentsJob = new CollectVertexMergeOpponmentsJob
