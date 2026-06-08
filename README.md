@@ -183,6 +183,28 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ---
 
+## Releasing a new version (maintainers)
+
+Releases are automated by the `Publish VPM Release` GitHub Actions workflow.
+
+1. Bump `version` in `package.json`, commit and push to `main`.
+2. Actions → **Publish VPM Release** → **Run workflow** (or push a tag equal to that version). It builds the package zip, publishes a GitHub Release, and writes the download URL + SHA256 into `index.json` on the `gh-pages` branch (older versions are kept).
+3. Keep the version ahead of upstream so it wins resolution.
+
+One-time setup: Settings → Actions → General → Workflow permissions → **Read and write**; and Settings → Pages → Deploy from a branch → **gh-pages** `/ (root)`.
+
+### リリース手順（メンテナー向け）
+
+リリースは `Publish VPM Release` ワークフローで自動化されています。
+
+1. `package.json` の `version` を上げて `main` にコミット＆プッシュ。
+2. Actions → **Publish VPM Release** → **Run workflow**（または同じバージョンのタグを push）。パッケージ zip をビルドし、GitHub Release を公開し、ダウンロード URL と SHA256 を `gh-pages` の `index.json` に書き込みます（過去のバージョンは保持されます）。
+3. 上流より高いバージョンを維持してください（解決時に優先されます）。
+
+初回のみ：Settings → Actions → General → Workflow permissions を **Read and write** に設定し、Settings → Pages → Deploy from a branch → **gh-pages** `/ (root)` を選択してください。
+
+---
+
 ## License
 
 MIT License. Copyright (c) 2025 Ram.Type-0 (original author); fork modifications by touma-tw. See [LICENSE.md](LICENSE.md).
