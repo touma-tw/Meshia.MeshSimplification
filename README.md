@@ -31,7 +31,7 @@ The classic Quadric Error Metrics (QEM) algorithm optimizes for geometric shape 
 
 #### Restoring the original behavior
 
-Set the six options above to `false` / their legacy values. By default this fork enables *Preserve Texture Mapping*, *Suppress Self-Intersection*, and *Preserve Material Boundaries*; *Preserve UV Seams* is off by default.
+Set the 4 options above to `false` / their legacy values. By default this fork enables *Preserve Texture Mapping*, *Suppress Self-Intersection*, and *Preserve Material Boundaries*; *Preserve UV Seams* is off by default.
 
 #### Tuning guide
 
@@ -103,7 +103,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 #### 還原原始行為
 
-把上述六個選項設為 `false`／原始值即可。本 fork 預設開啟 Preserve Texture Mapping、Suppress Self-Intersection、Preserve Material Boundaries；Preserve UV Seams 預設關閉。
+把上述四個選項設為 `false`／原始值即可。本 fork 預設開啟 Preserve Texture Mapping、Suppress Self-Intersection、Preserve Material Boundaries；Preserve UV Seams 預設關閉。
 
 #### 調參指南
 
@@ -153,7 +153,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 #### 元の挙動に戻すには
 
-上記6つのオプションを `false`／従来値に設定してください。本フォークの既定では *Preserve Texture Mapping*・*Suppress Self-Intersection*・*Preserve Material Boundaries* が有効で、*Preserve UV Seams* は無効です。
+上記4つのオプションを `false`／従来値に設定してください。本フォークの既定では *Preserve Texture Mapping*・*Suppress Self-Intersection*・*Preserve Material Boundaries* が有効で、*Preserve UV Seams* は無効です。
 
 #### チューニングガイド
 
