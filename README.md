@@ -49,7 +49,7 @@ In the **Meshia Cascading Avatar Mesh Simplifier**, each renderer row's numeric 
 
 Add the **Touma VPM** repository to VCC or ALCOM, then add the package to your project.
 
-[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](https://touma-tw.github.io/vpm/)
 
 - VPM repository: `https://touma-tw.github.io/vpm/index.json`
 - Listing page (with an Add to VCC button): https://touma-tw.github.io/vpm/
@@ -119,7 +119,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 在 VCC 或 ALCOM 加入 **Touma VPM** repository，再把套件加進你的專案。
 
-[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](https://touma-tw.github.io/vpm/)
 
 - VPM repository：`https://touma-tw.github.io/vpm/index.json`
 - Listing 網頁（內含 Add to VCC 按鈕）：https://touma-tw.github.io/vpm/
@@ -171,7 +171,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケージをプロジェクトに追加します。
 
-[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](https://touma-tw.github.io/vpm/)
 
 - VPM リポジトリ：`https://touma-tw.github.io/vpm/index.json`
 - リスティングページ（Add to VCC ボタンあり）：https://touma-tw.github.io/vpm/
