@@ -47,7 +47,12 @@ In the **Meshia Cascading Avatar Mesh Simplifier**, each renderer row's numeric 
 
 ### Installation
 
-This fork ships under the **same package id** (`com.ramtype0.meshia.mesh-simplification`) as the original, at a **higher version**, so it acts as a drop-in replacement: install it from this repository (via your VPM listing in VCC / ALCOM, or *Add package from git URL*) and your higher version supersedes the upstream package. Existing `MeshiaMeshSimplifier` components and their settings carry over unchanged, because the package id, namespace, and asset GUIDs are identical.
+Add the **Touma VPM** repository to VCC or ALCOM, then add the package to your project.
+
+- VPM repository: `https://touma-tw.github.io/vpm/index.json`
+- One-click: [**Add to VCC**](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+
+This fork ships under the **same package id** (`com.ramtype0.meshia.mesh-simplification`) as the original, at a **higher version**, so it supersedes the upstream package. Existing `MeshiaMeshSimplifier` components and their settings carry over unchanged, because the package id, namespace, and asset GUIDs are identical.
 
 Because it shares the package id and GUIDs, it **replaces** the upstream package and cannot be installed side by side with it. If you also have the upstream VPM repository added, make sure this fork's (higher) version is the one that resolves.
 
@@ -110,7 +115,12 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ### 安裝
 
-本 fork 以與原版**相同的套件 id**（`com.ramtype0.meshia.mesh-simplification`）、但**更高的版本號**發佈，作為原地替換：從本 repo 安裝（透過你在 VCC／ALCOM 的 VPM 清單，或 *Add package from git URL*），較高版本就會覆蓋上游套件。由於套件 id、namespace、資產 GUID 都相同，既有的 `MeshiaMeshSimplifier` 元件與其設定會原封不動延續。
+在 VCC 或 ALCOM 加入 **Touma VPM** repository，再把套件加進你的專案。
+
+- VPM repository：`https://touma-tw.github.io/vpm/index.json`
+- 一鍵加入：[**Add to VCC**](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+
+本 fork 以與原版**相同的套件 id**（`com.ramtype0.meshia.mesh-simplification`）、但**更高的版本號**發佈，因此會覆蓋上游套件。由於套件 id、namespace、資產 GUID 都相同，既有的 `MeshiaMeshSimplifier` 元件與其設定會原封不動延續。
 
 因為共用套件 id 與 GUID，它是**取代**上游套件、無法與其並存。若你同時加了上游的 VPM repo，請確保解析到的是本 fork（較高）的版本。
 
@@ -155,7 +165,12 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ### インストール
 
-本フォークは、オリジナルと**同じパッケージ ID**（`com.ramtype0.meshia.mesh-simplification`）で、**より高いバージョン**として配布されます。そのためドロップイン置き換えとして機能します。このリポジトリから（VCC／ALCOM の VPM リスト、または *Add package from git URL* で）追加すると、より高いバージョンが上流パッケージを上書きします。パッケージ ID・名前空間・アセット GUID が同一のため、既存の `MeshiaMeshSimplifier` コンポーネントとその設定はそのまま引き継がれます。
+VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケージをプロジェクトに追加します。
+
+- VPM リポジトリ：`https://touma-tw.github.io/vpm/index.json`
+- ワンクリック：[**Add to VCC**](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+
+本フォークは、オリジナルと**同じパッケージ ID**（`com.ramtype0.meshia.mesh-simplification`）で、**より高いバージョン**として配布されるため、上流パッケージを上書きします。パッケージ ID・名前空間・アセット GUID が同一のため、既存の `MeshiaMeshSimplifier` コンポーネントとその設定はそのまま引き継がれます。
 
 パッケージ ID と GUID を共有するため、上流パッケージを**置き換える**形になり、両方を同時にインストールすることはできません。上流の VPM リポジトリも追加している場合は、本フォークの（より高い）バージョンが解決されるようにしてください。
 
@@ -185,23 +200,19 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ## Releasing a new version (maintainers)
 
-Releases are automated by the `Publish VPM Release` GitHub Actions workflow.
-
 1. Bump `version` in `package.json`, commit and push to `main`.
-2. Actions → **Publish VPM Release** → **Run workflow** (or push a tag equal to that version). It builds the package zip, publishes a GitHub Release, and writes the download URL + SHA256 into `index.json` on the `gh-pages` branch (older versions are kept).
-3. Keep the version ahead of upstream so it wins resolution.
+2. Actions → **Publish Release** → **Run workflow** (or push a tag equal to that version). It builds the package zip and publishes a GitHub Release.
+3. The VPM listing repo (`touma-tw/vpm`) aggregates this package from its Releases. Keep the version ahead of upstream so it wins resolution.
 
-One-time setup: Settings → Actions → General → Workflow permissions → **Read and write**; and Settings → Pages → Deploy from a branch → **gh-pages** `/ (root)`.
+One-time setup: Settings → Actions → General → Workflow permissions → **Read and write**.
 
 ### リリース手順（メンテナー向け）
 
-リリースは `Publish VPM Release` ワークフローで自動化されています。
-
 1. `package.json` の `version` を上げて `main` にコミット＆プッシュ。
-2. Actions → **Publish VPM Release** → **Run workflow**（または同じバージョンのタグを push）。パッケージ zip をビルドし、GitHub Release を公開し、ダウンロード URL と SHA256 を `gh-pages` の `index.json` に書き込みます（過去のバージョンは保持されます）。
-3. 上流より高いバージョンを維持してください（解決時に優先されます）。
+2. Actions → **Publish Release** → **Run workflow**（または同じバージョンのタグを push）。パッケージ zip をビルドし、GitHub Release を公開します。
+3. VPM リスト用リポジトリ（`touma-tw/vpm`）が Releases からこのパッケージを取り込みます。上流より高いバージョンを維持してください。
 
-初回のみ：Settings → Actions → General → Workflow permissions を **Read and write** に設定し、Settings → Pages → Deploy from a branch → **gh-pages** `/ (root)` を選択してください。
+初回のみ：Settings → Actions → General → Workflow permissions を **Read and write** に設定してください。
 
 ---
 
