@@ -47,9 +47,9 @@ In the **Meshia Cascading Avatar Mesh Simplifier**, each renderer row's numeric 
 
 ### Installation
 
-This fork is a drop-in replacement that uses the **same assembly names and namespace** (`Meshia.MeshSimplification`) as the original and declares a `legacyFolders` entry, so it **cannot be installed alongside** the original `com.ramtype0.meshia.mesh-simplification` package — install one or the other.
+This fork ships under the **same package id** (`com.ramtype0.meshia.mesh-simplification`) as the original, at a **higher version**, so it acts as a drop-in replacement: install it from this repository (via your VPM listing in VCC / ALCOM, or *Add package from git URL*) and your higher version supersedes the upstream package. Existing `MeshiaMeshSimplifier` components and their settings carry over unchanged, because the package id, namespace, and asset GUIDs are identical.
 
-Add this package to your project via VCC / the Unity Package Manager (e.g. *Add package from git URL* pointing at this repository), then use it exactly like the original.
+Because it shares the package id and GUIDs, it **replaces** the upstream package and cannot be installed side by side with it. If you also have the upstream VPM repository added, make sure this fork's (higher) version is the one that resolves.
 
 ### How to use
 
@@ -110,7 +110,9 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ### 安裝
 
-本 fork 使用與原版**相同的組件名與 namespace**（`Meshia.MeshSimplification`）並宣告了 `legacyFolders`，因此**無法與原版 `com.ramtype0.meshia.mesh-simplification` 同時安裝**——擇一即可。透過 VCC／Unity Package Manager（例如 *Add package from git URL* 指向本 repo）加入後，用法與原版相同。
+本 fork 以與原版**相同的套件 id**（`com.ramtype0.meshia.mesh-simplification`）、但**更高的版本號**發佈，作為原地替換：從本 repo 安裝（透過你在 VCC／ALCOM 的 VPM 清單，或 *Add package from git URL*），較高版本就會覆蓋上游套件。由於套件 id、namespace、資產 GUID 都相同，既有的 `MeshiaMeshSimplifier` 元件與其設定會原封不動延續。
+
+因為共用套件 id 與 GUID，它是**取代**上游套件、無法與其並存。若你同時加了上游的 VPM repo，請確保解析到的是本 fork（較高）的版本。
 
 ---
 
@@ -153,9 +155,9 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ### インストール
 
-本フォークは、オリジナルと**同じアセンブリ名・名前空間**（`Meshia.MeshSimplification`）を使用し `legacyFolders` を宣言しているため、オリジナルの `com.ramtype0.meshia.mesh-simplification` パッケージと**同時にはインストールできません**（どちらか一方を使用してください）。
+本フォークは、オリジナルと**同じパッケージ ID**（`com.ramtype0.meshia.mesh-simplification`）で、**より高いバージョン**として配布されます。そのためドロップイン置き換えとして機能します。このリポジトリから（VCC／ALCOM の VPM リスト、または *Add package from git URL* で）追加すると、より高いバージョンが上流パッケージを上書きします。パッケージ ID・名前空間・アセット GUID が同一のため、既存の `MeshiaMeshSimplifier` コンポーネントとその設定はそのまま引き継がれます。
 
-VCC／Unity Package Manager（例：*Add package from git URL* でこのリポジトリを指定）でプロジェクトに追加すれば、使い方はオリジナルと同じです。
+パッケージ ID と GUID を共有するため、上流パッケージを**置き換える**形になり、両方を同時にインストールすることはできません。上流の VPM リポジトリも追加している場合は、本フォークの（より高い）バージョンが解決されるようにしてください。
 
 ### 使い方
 
