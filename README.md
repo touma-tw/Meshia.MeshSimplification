@@ -49,8 +49,10 @@ In the **Meshia Cascading Avatar Mesh Simplifier**, each renderer row's numeric 
 
 Add the **Touma VPM** repository to VCC or ALCOM, then add the package to your project.
 
+[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+
 - VPM repository: `https://touma-tw.github.io/vpm/index.json`
-- One-click: [**Add to VCC**](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+- Listing page (with an Add to VCC button): https://touma-tw.github.io/vpm/
 
 This fork ships under the **same package id** (`com.ramtype0.meshia.mesh-simplification`) as the original, at a **higher version**, so it supersedes the upstream package. Existing `MeshiaMeshSimplifier` components and their settings carry over unchanged, because the package id, namespace, and asset GUIDs are identical.
 
@@ -117,8 +119,10 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 在 VCC 或 ALCOM 加入 **Touma VPM** repository，再把套件加進你的專案。
 
+[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+
 - VPM repository：`https://touma-tw.github.io/vpm/index.json`
-- 一鍵加入：[**Add to VCC**](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+- Listing 網頁（內含 Add to VCC 按鈕）：https://touma-tw.github.io/vpm/
 
 本 fork 以與原版**相同的套件 id**（`com.ramtype0.meshia.mesh-simplification`）、但**更高的版本號**發佈，因此會覆蓋上游套件。由於套件 id、namespace、資產 GUID 都相同，既有的 `MeshiaMeshSimplifier` 元件與其設定會原封不動延續。
 
@@ -167,8 +171,10 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケージをプロジェクトに追加します。
 
+[![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+
 - VPM リポジトリ：`https://touma-tw.github.io/vpm/index.json`
-- ワンクリック：[**Add to VCC**](vcc://vpm/addRepo?url=https://touma-tw.github.io/vpm/index.json)
+- リスティングページ（Add to VCC ボタンあり）：https://touma-tw.github.io/vpm/
 
 本フォークは、オリジナルと**同じパッケージ ID**（`com.ramtype0.meshia.mesh-simplification`）で、**より高いバージョン**として配布されるため、上流パッケージを上書きします。パッケージ ID・名前空間・アセット GUID が同一のため、既存の `MeshiaMeshSimplifier` コンポーネントとその設定はそのまま引き継がれます。
 
