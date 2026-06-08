@@ -1,0 +1,5 @@
+# Keep development-only files out of `git archive` output (the VPM release zip).
+/.github/        export-ignore
+/.docfx/         export-ignore
+/.gitattributes  export-ignore
+/.gitignore      export-ignore
