@@ -27,7 +27,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
 
         static SettingsMigrationTool()
         {
-            Editor.finishedDefaultHeaderGUI += OnHeaderGUI;
+            UnityEditor.Editor.finishedDefaultHeaderGUI += OnHeaderGUI;
         }
 
         // Type *names* of components produced by older versions / the original Meshia.
@@ -39,7 +39,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
 
         // ---------- Inspector header button (only when an old component is present) ----------
 
-        static void OnHeaderGUI(Editor editor)
+        static void OnHeaderGUI(UnityEditor.Editor editor)
         {
             var targets = editor.targets.OfType<GameObject>().Where(go => go != null && HasOldComponent(go)).ToArray();
             if (targets.Length == 0) return;
