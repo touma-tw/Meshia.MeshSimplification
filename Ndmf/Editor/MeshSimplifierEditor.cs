@@ -8,9 +8,9 @@ using UnityEngine.UIElements;
 
 namespace Touma.MeshSimplification.Ndmf.Editor
 {
-    [CustomEditor(typeof(MeshiaMeshSimplifier))]
+    [CustomEditor(typeof(MeshSimplifier))]
     [CanEditMultipleObjects]
-    public class MeshiaMeshSimplifierEditor : UnityEditor.Editor
+    public class MeshSimplifierEditor : UnityEditor.Editor
     {
         [SerializeField]
         VisualTreeAsset visualTreeAsset = null!;
@@ -58,7 +58,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 // But how could we register callback for whether target mesh is currently available?
                 if (targets.Length == 1)
                 {
-                    var ndmfMeshSimplifier = (MeshiaMeshSimplifier)target;
+                    var ndmfMeshSimplifier = (MeshSimplifier)target;
                     if (TryGetTargetMesh(ndmfMeshSimplifier, out var targetMesh))
                     {
                         if (GUILayout.Button("Bake mesh"))
@@ -73,7 +73,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                             {
                                 Mesh simplifiedMesh = new();
 
-                                MeshSimplifier.Simplify(targetMesh, ndmfMeshSimplifier.target, ndmfMeshSimplifier.options, simplifiedMesh);
+                                global::Touma.MeshSimplification.MeshSimplifier.Simplify(targetMesh, ndmfMeshSimplifier.target, ndmfMeshSimplifier.options, simplifiedMesh);
 
                                 AssetDatabase.CreateAsset(simplifiedMesh, Path.Join("Assets/", Path.GetRelativePath(Application.dataPath, absolutePath)));
                             }
@@ -90,9 +90,9 @@ namespace Touma.MeshSimplification.Ndmf.Editor
         {
             if (targets.Length != 1)
             {
-                return "Select a single Meshia Mesh Simplifier to see the resulting triangle count.";
+                return "Select a single Mesh Simplifier to see the resulting triangle count.";
             }
-            var ndmfMeshSimplifier = (MeshiaMeshSimplifier)target;
+            var ndmfMeshSimplifier = (MeshSimplifier)target;
             if (!TryGetTargetMesh(ndmfMeshSimplifier, out var targetMesh))
             {
                 return "No mesh found on this object.";
@@ -103,7 +103,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
             Mesh simplifiedMesh = new();
             try
             {
-                MeshSimplifier.Simplify(targetMesh, ndmfMeshSimplifier.target, ndmfMeshSimplifier.options, simplifiedMesh);
+                global::Touma.MeshSimplification.MeshSimplifier.Simplify(targetMesh, ndmfMeshSimplifier.target, ndmfMeshSimplifier.options, simplifiedMesh);
                 var resultTriangleCount = CountTriangles(simplifiedMesh);
                 var resultVertexCount = simplifiedMesh.vertexCount;
                 var targetDescription = DescribeTarget(ndmfMeshSimplifier.target, sourceTriangleCount, targetMesh.vertexCount);
@@ -144,7 +144,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
             _ => target.Value.ToString(),
         };
 
-        private static bool TryGetTargetMesh(MeshiaMeshSimplifier ndmfMeshSimplifier, [NotNullWhen(true)] out Mesh? targetMesh)
+        private static bool TryGetTargetMesh(MeshSimplifier ndmfMeshSimplifier, [NotNullWhen(true)] out Mesh? targetMesh)
         {
             targetMesh = null;
             if (ndmfMeshSimplifier.TryGetComponent<MeshFilter>(out var meshFilter))

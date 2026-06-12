@@ -14,15 +14,15 @@ using Unity.Mathematics;
 
 namespace Touma.MeshSimplification.Ndmf
 {
-    [AddComponentMenu("Meshia Mesh Simplification/Meshia Cascading Avatar Mesh Simplifier")]
-    public class MeshiaCascadingAvatarMeshSimplifier : MonoBehaviour
+    [AddComponentMenu("Mesh Simplification/Cascading Avatar Mesh Simplifier")]
+    public class CascadingAvatarMeshSimplifier : MonoBehaviour
 #if ENABLE_VRCHAT_BASE
     , VRC.SDKBase.IEditorOnly
 #endif
     {
-        public List<MeshiaCascadingAvatarMeshSimplifierRendererEntry> Entries = new();
+        public List<CascadingAvatarMeshSimplifierRendererEntry> Entries = new();
         public int TargetTriangleCount = 70000;
-        public bool AutoAdjustEnabled = true;
+        public bool AutoAdjustEnabled = false;
         
         public void RefreshEntries()
         {
@@ -30,7 +30,7 @@ namespace Touma.MeshSimplification.Ndmf
             {
                 GetOwnedRenderers(ownedRenderers);
                 var currentEntries = Entries.Select(t => t.GetTargetRenderer(this));
-                var addedEntries = ownedRenderers.Except(currentEntries).Where(MeshiaCascadingAvatarMeshSimplifierRendererEntry.IsValidTarget).Select(renderer => new MeshiaCascadingAvatarMeshSimplifierRendererEntry(renderer!)).ToArray();
+                var addedEntries = ownedRenderers.Except(currentEntries).Where(CascadingAvatarMeshSimplifierRendererEntry.IsValidTarget).Select(renderer => new CascadingAvatarMeshSimplifierRendererEntry(renderer!)).ToArray();
 
                 Entries.AddRange(addedEntries);
             }
@@ -44,9 +44,9 @@ namespace Touma.MeshSimplification.Ndmf
 
             if(myScopeOrigin == null)
             {
-                throw new InvalidOperationException($"{nameof(MeshiaCascadingAvatarMeshSimplifier)} should not be attached to root GameObject.");
+                throw new InvalidOperationException($"{nameof(CascadingAvatarMeshSimplifier)} should not be attached to root GameObject.");
             }
-            using (ListPool<MeshiaCascadingAvatarMeshSimplifier>.Get(out var childSimplifiers))
+            using (ListPool<CascadingAvatarMeshSimplifier>.Get(out var childSimplifiers))
             using (HashSetPool<Transform>.Get(out var otherScopeOrigins))
             {
                 myScopeOrigin.gameObject.GetComponentsInChildren(childSimplifiers);
@@ -57,7 +57,7 @@ namespace Touma.MeshSimplification.Ndmf
                         var otherScopeOrigin = childSimplifier.transform.parent;
                         if(otherScopeOrigin == myScopeOrigin)
                         {
-                            throw new InvalidOperationException($"Multiple {nameof(MeshiaCascadingAvatarMeshSimplifier)} is attached to direct children of GameObject. This is not allowed.");
+                            throw new InvalidOperationException($"Multiple {nameof(CascadingAvatarMeshSimplifier)} is attached to direct children of GameObject. This is not allowed.");
                         }
                         otherScopeOrigins.Add(otherScopeOrigin);
 
@@ -128,7 +128,7 @@ namespace Touma.MeshSimplification.Ndmf
                 target.ResolveReference(this);
             }
         }
-        public static BitArray? GetPreserveBorderEdgesBoneIndices(GameObject avatarRoot, MeshiaCascadingAvatarMeshSimplifier avatarMeshSimplifier, MeshiaCascadingAvatarMeshSimplifierRendererEntry entry)
+        public static BitArray? GetPreserveBorderEdgesBoneIndices(GameObject avatarRoot, CascadingAvatarMeshSimplifier avatarMeshSimplifier, CascadingAvatarMeshSimplifierRendererEntry entry)
         {
             if (avatarRoot.TryGetComponent(out Animator avatarAnimator) && entry.GetTargetRenderer(avatarMeshSimplifier) is SkinnedMeshRenderer skinnedMeshRenderer)
             {
@@ -160,7 +160,7 @@ namespace Touma.MeshSimplification.Ndmf
     }
 
     [Serializable]
-    public record MeshiaCascadingAvatarMeshSimplifierRendererEntry
+    public record CascadingAvatarMeshSimplifierRendererEntry
     {
         public AvatarObjectReference RendererObjectReference;
         public int TargetTriangleCount;
@@ -202,11 +202,11 @@ namespace Touma.MeshSimplification.Ndmf
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [Obsolete("For serialization only", true)]
 #pragma warning disable CS8618
-        private MeshiaCascadingAvatarMeshSimplifierRendererEntry()
+        private CascadingAvatarMeshSimplifierRendererEntry()
 #pragma warning restore CS8618
         {
         }
-        public MeshiaCascadingAvatarMeshSimplifierRendererEntry(Renderer renderer)
+        public CascadingAvatarMeshSimplifierRendererEntry(Renderer renderer)
         {
             RendererObjectReference = new AvatarObjectReference();
             RendererObjectReference.Set(renderer.gameObject);
@@ -230,7 +230,7 @@ namespace Touma.MeshSimplification.Ndmf
             return obj.TryGetComponent<Renderer>(out var renderer) && renderer is (MeshRenderer or SkinnedMeshRenderer) ? renderer : null;
         }
 
-        internal bool IsValid(MeshiaCascadingAvatarMeshSimplifier container) => IsValidTarget(GetTargetRenderer(container));
+        internal bool IsValid(CascadingAvatarMeshSimplifier container) => IsValidTarget(GetTargetRenderer(container));
 
         internal static bool IsEditorOnlyInHierarchy(GameObject gameObject)
         {

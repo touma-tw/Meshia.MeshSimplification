@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Touma.MeshSimplification.Ndmf.Editor.Preview
 {
-    internal class MeshiaCascadingAvatarMeshSimplifierPreview : MeshiaMeshSimplifierPreviewBase<MeshiaCascadingAvatarMeshSimplifierPreview>
+    internal class CascadingAvatarMeshSimplifierPreview : MeshSimplifierPreviewBase<CascadingAvatarMeshSimplifierPreview>
     {
         public override ImmutableList<RenderGroup> GetTargetGroups(ComputeContext context)
         {
@@ -19,7 +19,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor.Preview
             foreach (var root in context.GetAvatarRoots())
             {
                 if (context.ActiveInHierarchy(root) is false) continue;
-                foreach (var component in context.GetComponentsInChildren<MeshiaCascadingAvatarMeshSimplifier>(root, true))
+                foreach (var component in context.GetComponentsInChildren<CascadingAvatarMeshSimplifier>(root, true))
                 {
                     var componentEnabled = context.Observe(component.gameObject, g => g.activeInHierarchy);
                     if (!componentEnabled) continue;
@@ -32,7 +32,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor.Preview
                         if (!targetEnabled) continue;
 
                         var renderer = component.Entries[index].GetTargetRenderer(component)!;
-                        groups.Add(RenderGroup.For(renderer).WithData<(MeshiaCascadingAvatarMeshSimplifier, int)>((component, index)));
+                        groups.Add(RenderGroup.For(renderer).WithData<(CascadingAvatarMeshSimplifier, int)>((component, index)));
                     }
                 }
             }
@@ -41,7 +41,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor.Preview
         
         protected override (MeshSimplificationTarget, MeshSimplifierOptions, BitArray?) QueryTarget(ComputeContext context, RenderGroup group, Renderer original, Renderer proxy)
         {
-            var data = group.GetData<(MeshiaCascadingAvatarMeshSimplifier, int)>();
+            var data = group.GetData<(CascadingAvatarMeshSimplifier, int)>();
             var component = data.Item1;
             var index = data.Item2;
 
@@ -49,7 +49,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor.Preview
             var target = new MeshSimplificationTarget() { Kind = MeshSimplificationTargetKind.AbsoluteTriangleCount, Value = cascadingTarget.TargetTriangleCount };
 
             var avatarRoot = context.GetAvatarRoot(original.gameObject);
-            var preserveBorderEdgeBoneIndices = MeshiaCascadingAvatarMeshSimplifier.GetPreserveBorderEdgesBoneIndices(avatarRoot, component, cascadingTarget);
+            var preserveBorderEdgeBoneIndices = CascadingAvatarMeshSimplifier.GetPreserveBorderEdgesBoneIndices(avatarRoot, component, cascadingTarget);
             return (target, cascadingTarget.Options, preserveBorderEdgeBoneIndices);
         }
 

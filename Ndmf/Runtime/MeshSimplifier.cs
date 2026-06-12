@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Touma.MeshSimplification.Ndmf
 {
-    [AddComponentMenu("Meshia Mesh Simplification/Meshia Mesh Simplifier")]
+    [AddComponentMenu("Mesh Simplification/Mesh Simplifier")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Renderer))]
-    public class MeshiaMeshSimplifier : MonoBehaviour
+    public class MeshSimplifier : MonoBehaviour
 #if ENABLE_VRCHAT_BASE
     , VRC.SDKBase.IEditorOnly
 #endif

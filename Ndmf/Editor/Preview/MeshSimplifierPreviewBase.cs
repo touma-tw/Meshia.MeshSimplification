@@ -11,8 +11,8 @@ using System.Collections;
 
 namespace Touma.MeshSimplification.Ndmf.Editor.Preview
 {
-    internal abstract class MeshiaMeshSimplifierPreviewBase<TDerived> : IRenderFilter
-        where TDerived : MeshiaMeshSimplifierPreviewBase<TDerived>
+    internal abstract class MeshSimplifierPreviewBase<TDerived> : IRenderFilter
+        where TDerived : MeshSimplifierPreviewBase<TDerived>
     {
         public static readonly Dictionary<Renderer, (int proxy, int simplified)> TriangleCountCache = new();
 
@@ -45,7 +45,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor.Preview
             Mesh simplifiedMesh = new();
             try
             {
-                await MeshSimplifier.SimplifyAsync(proxyMesh, target, options, preserveBorderEdgesBoneIndices, simplifiedMesh);
+                await global::Touma.MeshSimplification.MeshSimplifier.SimplifyAsync(proxyMesh, target, options, preserveBorderEdgesBoneIndices, simplifiedMesh);
             }
             catch (Exception)
             {

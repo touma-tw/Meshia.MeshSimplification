@@ -16,7 +16,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
 {
     class NdmfPlugin : Plugin<NdmfPlugin>
     {
-        public override string DisplayName => "Meshia NDMF Mesh Simplifier";
+        public override string DisplayName => "Mesh Simplifier";
 
         protected override void Configure()
         {
@@ -25,7 +25,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
             InPhase(BuildPhase.Resolving)
                 .Run("Resolve References", context =>
                 {
-                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<MeshiaCascadingAvatarMeshSimplifier>(true);
+                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<CascadingAvatarMeshSimplifier>(true);
                     foreach (var cascadingMeshSimplifier in meshiaCascadingMeshSimplifiers)
                     {
                         cascadingMeshSimplifier.ResolveReferences();
@@ -38,10 +38,10 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 .BeforePlugin("com.anatawa12.avatar-optimizer")
                 .Run("Simplify meshes", context =>
                 {
-                    var meshiaMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<MeshiaMeshSimplifier>(true);
+                    var meshiaMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<MeshSimplifier>(true);
 #if ENABLE_MODULAR_AVATAR
                     
-                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<MeshiaCascadingAvatarMeshSimplifier>(true);
+                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<CascadingAvatarMeshSimplifier>(true);
 #endif
 
                     using (ListPool<(Mesh Mesh, MeshSimplificationTarget Target, MeshSimplifierOptions Options, BitArray? preserveBorderEdgesBoneIndices, Mesh Destination)>.Get(out var parameters))
@@ -66,7 +66,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                                 var target = new MeshSimplificationTarget() { Kind = MeshSimplificationTargetKind.AbsoluteTriangleCount, Value = entry.TargetTriangleCount };
                                 Mesh simplifiedMesh = new();
 
-                                var preserveBorderEdgesBoneIndices = MeshiaCascadingAvatarMeshSimplifier.GetPreserveBorderEdgesBoneIndices(context.AvatarRootObject, meshiaCascadingMeshSimplifier, entry);
+                                var preserveBorderEdgesBoneIndices = CascadingAvatarMeshSimplifier.GetPreserveBorderEdgesBoneIndices(context.AvatarRootObject, meshiaCascadingMeshSimplifier, entry);
 
                                 parameters.Add((mesh, target, entry.Options, preserveBorderEdgesBoneIndices, simplifiedMesh));
                             }
@@ -74,7 +74,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
 
 #endif
 
-                        MeshSimplifier.SimplifyBatch(parameters);
+                        global::Touma.MeshSimplification.MeshSimplifier.SimplifyBatch(parameters);
                         {
                             var i = 0;
 
@@ -117,9 +117,9 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                     }
                 }).PreviewingWith(new IRenderFilter[]
                 {
-                    new MeshiaMeshSimplifierPreview(),
+                    new MeshSimplifierPreview(),
 #if ENABLE_MODULAR_AVATAR
-                    new MeshiaCascadingAvatarMeshSimplifierPreview(),
+                    new CascadingAvatarMeshSimplifierPreview(),
 #endif
                 })
             ;
