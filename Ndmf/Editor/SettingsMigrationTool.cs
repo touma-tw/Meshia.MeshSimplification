@@ -85,6 +85,13 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                         strays++;
                     }
 
+                    // If the object still carries an old default holder name, update it to match.
+                    if (dst.gameObject.name is "Meshia Cascading Avatar Mesh Simplifier" or "Cascading Avatar Mesh Simplifier")
+                    {
+                        Undo.RecordObject(dst.gameObject, "Rename mesh-simplification object");
+                        dst.gameObject.name = "Avatar Mesh Simplification - Touma Fork";
+                    }
+
                     report.AppendLine($"  • {Path(dst.gameObject)}  →  Avatar Mesh Simplification - Touma Fork");
                     migrated++;
                 }

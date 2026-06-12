@@ -32,7 +32,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor.Preview
                         if (!targetEnabled) continue;
 
                         var renderer = component.Entries[index].GetTargetRenderer(component)!;
-                        groups.Add(RenderGroup.For(renderer).WithData<(AvatarMeshSimplifierTouma, int)>((component, index)));
+                        groups.Add(RenderGroup.For(renderer).WithData((component, index), (a, b) => a.Equals(b)));
                     }
                 }
             }
