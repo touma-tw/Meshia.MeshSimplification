@@ -35,7 +35,7 @@ You can preview the result in EditMode.
 
 ```csharp
 
-using Meshia.MeshSimplification;
+using Touma.MeshSimplification;
 
 Mesh simplifiedMesh = new();
 
@@ -72,7 +72,7 @@ NDMFがプロジェクトにインポートされている場合、`MeshiaMeshSi
 
 ```csharp
 
-using Meshia.MeshSimplification;
+using Touma.MeshSimplification;
 
 Mesh simplifiedMesh = new();
 

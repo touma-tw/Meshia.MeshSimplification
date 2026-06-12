@@ -1,10 +1,10 @@
 {
-    "name": "Meshia.MeshSimplification.Runtime.Tests",
-    "rootNamespace": "Meshia.MeshSimplification.Tests",
+    "name": "Touma.MeshSimplification.Runtime.Tests",
+    "rootNamespace": "Touma.MeshSimplification.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Meshia.MeshSimplification.Runtime",
+        "Touma.MeshSimplification.Runtime",
         "Unity.Collections",
         "Unity.Mathematics"
     ],

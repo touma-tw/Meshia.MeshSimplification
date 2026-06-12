@@ -6,7 +6,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     struct UnsafeKdTree : INativeDisposable
     {

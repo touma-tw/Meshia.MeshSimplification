@@ -1,9 +1,9 @@
-﻿using Unity.Burst;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Plane = Unity.Mathematics.Geometry.Plane;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     [BurstCompile]
     struct ComputeTriangleNormalsAndErrorQuadricsJob : IJobParallelForDefer

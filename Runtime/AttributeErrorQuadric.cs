@@ -1,6 +1,6 @@
 using Unity.Mathematics;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     /// <summary>
     /// Garland-Heckbert / Hoppe attribute aware quadric error metric over the 5D space

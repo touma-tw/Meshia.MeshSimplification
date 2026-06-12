@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Unity.Jobs;
 using Unity.Jobs.LowLevel.Unsafe;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     internal static class JobHandleSpanExtensions
     {

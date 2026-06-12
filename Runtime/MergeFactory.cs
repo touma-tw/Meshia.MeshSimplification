@@ -1,9 +1,9 @@
-﻿using Unity.Burst;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 using Unity.Profiling;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     struct MergeFactory
     {

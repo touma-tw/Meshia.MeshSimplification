@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Meshia.MeshSimplification.Tests
+namespace Touma.MeshSimplification.Tests
 {
     public class AttributeErrorQuadricTests
     {

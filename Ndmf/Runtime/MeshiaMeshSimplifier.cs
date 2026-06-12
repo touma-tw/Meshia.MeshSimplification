@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace Meshia.MeshSimplification.Ndmf
+namespace Touma.MeshSimplification.Ndmf
 {
     [AddComponentMenu("Meshia Mesh Simplification/Meshia Mesh Simplifier")]
     [DisallowMultipleComponent]

@@ -1,9 +1,9 @@
 {
-    "name": "Meshia.MeshSimplification.Ndmf.Editor",
-    "rootNamespace": "Meshia.MeshSimplification.Ndmf.Editor",
+    "name": "Touma.MeshSimplification.Ndmf.Editor",
+    "rootNamespace": "Touma.MeshSimplification.Ndmf.Editor",
     "references": [
-        "Meshia.MeshSimplification.Runtime",
-        "Meshia.MeshSimplification.Ndmf.Runtime",
+        "Touma.MeshSimplification.Runtime",
+        "Touma.MeshSimplification.Ndmf.Runtime",
         "nadena.dev.ndmf",
         "nadena.dev.ndmf.runtime",
         "nadena.dev.modular-avatar.core"

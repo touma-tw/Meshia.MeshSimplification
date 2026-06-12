@@ -17,7 +17,7 @@ permissions:
   contents: write
 
 env:
-  PACKAGE_NAME: com.ramtype0.meshia.mesh-simplification
+  PACKAGE_NAME: com.touma.meshia-simplification
 
 jobs:
   release:

@@ -1,8 +1,8 @@
 {
-    "name": "Meshia.MeshSimplification.Editor",
-    "rootNamespace": "Meshia.MeshSimplification.Editor",
+    "name": "Touma.MeshSimplification.Editor",
+    "rootNamespace": "Touma.MeshSimplification.Editor",
     "references": [
-        "GUID:2badc7067c4f2f74ebf5e33b79399358",
+        "GUID:7b15620336f745c59188330f07ae5329",
         "GUID:295ffbe0b63504ae3a7879cf089501ba"
     ],
     "includePlatforms": [

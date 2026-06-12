@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     /// <summary>
     /// Accumulates the per vertex attribute aware quadric by summing the quadrics of incident triangles.

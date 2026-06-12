@@ -1,6 +1,6 @@
 {
-    "name": "Meshia.MeshSimplification.Runtime",
-    "rootNamespace": "Meshia.MeshSimplification",
+    "name": "Touma.MeshSimplification.Runtime",
+    "rootNamespace": "Touma.MeshSimplification",
     "references": [
         "Unity.Burst",
         "Unity.Mathematics",

@@ -1,10 +1,10 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 using UnityEngine;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     public struct BlendShapeFrameData : IDisposable
     {

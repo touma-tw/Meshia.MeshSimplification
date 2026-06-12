@@ -9,7 +9,7 @@ using UnityEngine;
 using nadena.dev.ndmf.preview;
 using System.Collections;
 
-namespace Meshia.MeshSimplification.Ndmf.Editor.Preview
+namespace Touma.MeshSimplification.Ndmf.Editor.Preview
 {
     internal abstract class MeshiaMeshSimplifierPreviewBase<TDerived> : IRenderFilter
         where TDerived : MeshiaMeshSimplifierPreviewBase<TDerived>

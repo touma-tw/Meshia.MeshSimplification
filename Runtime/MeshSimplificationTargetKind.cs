@@ -1,7 +1,7 @@
-﻿#nullable enable
+#nullable enable
 using System;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     /// <summary>
     /// Represents what actually <see cref="MeshSimplificationTarget.Value"/> means.

@@ -1,5 +1,5 @@
 #nullable enable
-namespace Meshia.MeshSimplification.Editor.Localization
+namespace Touma.MeshSimplification.Editor.Localization
 {
     using CustomLocalization4EditorExtension;
     using System;
@@ -12,7 +12,7 @@ namespace Meshia.MeshSimplification.Editor.Localization
         private const string DefaultLocale = "en";
 
         [AssemblyCL4EELocalization]
-        public static Localization Localization { get; } = new("ca7beb49d3e85244e803080472c014c2", DefaultLocale);
+        public static Localization Localization { get; } = new("1893e3d867f54ca9b14cf4b49858c123", DefaultLocale);
         public static void LocalizeBindedElements<T>(VisualElement root)
         {
             var typeName = typeof(T).FullName;

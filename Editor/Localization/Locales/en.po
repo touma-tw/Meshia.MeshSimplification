@@ -2,119 +2,119 @@ msgid ""
 msgstr ""
 "Language: en\n"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.label"
 msgstr "Preserve Border Edges"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.tooltip"
 msgstr ""
 "Avoid removing edges that do not touch other surfaces, such as holes or cross sections.\n"
 "If you want to suppress hole generation during simplification, enable this option."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.label"
 msgstr "Preserve Surface Curvature"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.tooltip"
 msgstr "Use a process that preserves gently curved surfaces, but sometimes the results can be worse."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.label"
 msgstr "Use Barycentric Coordinate Interpolation"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.tooltip"
 msgstr ""
 "Use Barycentric Coordinate Interpolation instead of linear interpolation for interpolating UVs, etc.\n"
 "If you find that the texture is distorted, try toggling this option."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MinNormalDot.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MinNormalDot.label"
 msgstr "Tolerance for Normal Angle (by cosθ)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MinNormalDot.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MinNormalDot.tooltip"
 msgstr ""
 "Specifies how much normal misalignment to allow when generating lightweight polygons.\n"
 "For example, 0(=cos90°) allows up to 90° misalignment, and -1(=cos180°) allows up to 180° misalignment."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.label"
 msgstr "Enable Smart Link"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.tooltip"
 msgstr "If this option is enabled, vertices that are not originally connected but are close to each other will be included in the first merge candidates. Increases the processing time."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions"
 msgstr "Smart Link Options"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.label"
 msgstr "Vertex Link Distance"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.tooltip"
 msgstr ""
 "This value is used to select candidates for merging vertices that are not originally connected to each other, based on their position proximity.\n"
 "Larger values may increase processing time and crashes with meshes having more than 40,000 vertices."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.label"
 msgstr "Vertex Link Color Distance"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.tooltip"
 msgstr ""
 "This value is used to select candidates for merging vertices that are not originally connected to each other, based on their vertex color similarity.\n"
 "Larger values may improve the shape of the polygons after lightening, but sometimes result in unnatural vertex colors instead."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.label"
 msgstr "Vertex Link UV Distance"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.tooltip"
 msgstr ""
 "This value is used to select candidates for merging vertices that are not originally connected to each other, based on their UV coordinate proximity.\n"
 "Larger values may improve the shape of the polygons after lightening, but sometimes result in unnatural UVs instead."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.label"
 msgstr "Tolerance for Normal Angle (by cosθ)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.tooltip"
 msgstr "Use different tolerance for normal angle for Smart Link. The stricter of the two is used for Smart Link."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.label"
 msgstr "Preserve Material Boundaries"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.tooltip"
 msgstr ""
 "Prevents merging vertices that belong to different sub meshes (materials).\n"
 "Keeps material boundaries crisp and avoids material bleeding when simplifying multi-material meshes such as avatars."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.label"
 msgstr "Preserve UV Seams"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.tooltip"
 msgstr ""
 "Locks vertices that lie on a UV seam (coincident in position but discontinuous in UV).\n"
 "Prevents textures from being torn apart across seams during simplification."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.label"
 msgstr "Suppress Self-Intersection"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.tooltip"
 msgstr ""
 "Constrains the collapsed vertex to the neighborhood of the edge it came from.\n"
 "Suppresses spikes that poke through other surfaces (self-intersection / clipping)."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.label"
 msgstr "Max Collapse Displacement Factor"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.tooltip"
 msgstr ""
 "The optimal position is rejected when it is farther than this factor times the edge length from the edge midpoint.\n"
 "Smaller values are stricter (less spiking) but may slightly reduce shape accuracy."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.label"
 msgstr "Preserve Texture Mapping (Attribute-Aware Error)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.tooltip"
 msgstr ""
 "Includes UV coordinates in the error metric itself (attribute-aware quadric error).\n"
 "Greatly reduces texture distortion at high reduction ratios, at the cost of extra initialization time and memory."
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.label"
 msgstr "UV Error Weight"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.tooltip"
 msgstr ""
 "Relative importance of UV preservation versus geometric shape.\n"
 "Larger values preserve the texture mapping more aggressively; smaller values favor geometric accuracy."

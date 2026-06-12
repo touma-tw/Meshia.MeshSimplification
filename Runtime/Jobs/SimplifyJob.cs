@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Burst;
 using Unity.Burst.CompilerServices;
 using Unity.Collections;
@@ -8,7 +8,7 @@ using Unity.Mathematics;
 using Unity.Mathematics.Geometry;
 using Unity.Profiling;
 using UnityEngine;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     [BurstCompile(DisableSafetyChecks = true, OptimizeFor = OptimizeFor.Performance)]
     struct SimplifyJob : IJob

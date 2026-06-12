@@ -7,7 +7,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     [NativeContainer]
     unsafe struct NativeMinPriorityQueue<T> : INativeDisposable

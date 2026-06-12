@@ -7,7 +7,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     /// <summary>
     ///  Represents a min priority queue.

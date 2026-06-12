@@ -9,7 +9,7 @@ using System.Linq;
 using nadena.dev.ndmf.preview;
 using UnityEngine;
 
-namespace Meshia.MeshSimplification.Ndmf.Editor.Preview
+namespace Touma.MeshSimplification.Ndmf.Editor.Preview
 {
     internal class MeshiaCascadingAvatarMeshSimplifierPreview : MeshiaMeshSimplifierPreviewBase<MeshiaCascadingAvatarMeshSimplifierPreview>
     {

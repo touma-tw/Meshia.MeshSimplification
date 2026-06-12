@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Meshia.MeshSimplification.Ndmf.Editor
+namespace Touma.MeshSimplification.Ndmf.Editor
 {
     [CustomEditor(typeof(MeshiaMeshSimplifier))]
     [CanEditMultipleObjects]

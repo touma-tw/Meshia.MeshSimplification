@@ -1,19 +1,19 @@
 #nullable enable
 using CustomLocalization4EditorExtension;
-using Meshia.MeshSimplification;
-using Meshia.MeshSimplification.Editor.Localization;
+using Touma.MeshSimplification;
+using Touma.MeshSimplification.Editor.Localization;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-namespace Meshia.MeshSimplification.Editor
+namespace Touma.MeshSimplification.Editor
 {
     [CustomPropertyDrawer(typeof(MeshSimplifierOptions))]
     public class MeshSimplifierOptionsDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(AssetDatabase.GUIDToAssetPath("29eaabb0631cacc44913c34b86fc38f0"));
+            var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(AssetDatabase.GUIDToAssetPath("457660dec4864705812a7f54de891615"));
 
             var root = visualTreeAsset.CloneTree();
 
@@ -33,14 +33,14 @@ namespace Meshia.MeshSimplification.Editor
             var resetOptionsButton = root.Q<Button>("ResetOptionsButton");
 
             LocalizationProvider.LocalizeBindedElements<MeshSimplifierOptions>(root);
-            smartLinkOptionsGroup.text = LocalizationProvider.Localization.Tr("Meshia.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions");
+            smartLinkOptionsGroup.text = LocalizationProvider.Localization.Tr("Touma.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions");
 
             LocalizationProvider.Localization.MountLanguagePicker(languagePicker);
 
             languagePicker.RegisterValueChangedCallback(evt =>
             {
                 LocalizationProvider.LocalizeBindedElements<MeshSimplifierOptions>(root);
-                smartLinkOptionsGroup.text = LocalizationProvider.Localization.Tr("Meshia.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions");
+                smartLinkOptionsGroup.text = LocalizationProvider.Localization.Tr("Touma.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions");
             });
 
             enableSmartLinkToggle.RegisterValueChangedCallback(changeEvent =>

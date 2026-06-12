@@ -2,114 +2,114 @@ msgid ""
 msgstr ""
 "Language: ja\n"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.label"
 msgstr "メッシュの端の辺を保持"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveBorderEdges.tooltip"
 msgstr ""
 "他の面に接していない辺(穴や切れ目の縁など)を削除しないようにします。\n"
 "軽量化後のメッシュに穴が目立つ場合、このオプションを有効にしてみてください。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.label"
 msgstr "なだらかな曲面を保持"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSurfaceCurvature.tooltip"
 msgstr "なだらかな曲面を保持する処理を用いるようにしますが、結果が悪化する場合もあります。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.label"
 msgstr "重心座標系補間を使用する"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseBarycentricCoordinateInterpolation.tooltip"
 msgstr "UVなどの補間において、線形補間の代わりに重心座標系補間を用います。UVの歪みが目立つ場合、このオプションを切り替えてみてください。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MinNormalDot.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MinNormalDot.label"
 msgstr "法線角度の許容誤差(cosθ)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MinNormalDot.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MinNormalDot.tooltip"
 msgstr ""
 "軽量化後のポリゴンにおいて、頂点の法線方向のズレをどこまで許容するか指定します。\n"
 "0(=cos90°)を指定すると90°までのズレを、-1(=cos180°)を指定すると180°までのズレを許容します。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.label"
 msgstr "近くの頂点同士をマージ候補に含める(SmartLink)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.EnableSmartLink.tooltip"
 msgstr "同一のポリゴンに含まれている頂点に加えて、近くにある頂点同士も初期のマージ候補に含めるようにします。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.SmartLinkOptions"
 msgstr "SmartLink設定"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.label"
 msgstr "マージ候補に含める頂点同士の距離"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkDistance.tooltip"
 msgstr ""
 "この距離より近い頂点同士がマージ候補に含まれます。\n"
 "大きな値を設定すると処理時間が伸びる場合があります。\n"
 "また、4万頂点以上のメッシュで大きな値を指定するとクラッシュする場合があります。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.label"
 msgstr "マージ候補に含める頂点同士の頂点カラーの距離"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkColorDistance.tooltip"
 msgstr "大きな値を設定すると軽量化後のポリゴンの形状が改善されることがありますが、代わりに頂点カラーが不自然になる場合があります。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.label"
 msgstr "マージ候補に含める頂点同士のUV距離"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkUvDistance.tooltip"
 msgstr "大きな値を設定すると軽量化後のポリゴンの形状が改善されることがありますが、代わりにUVが不自然になる場合があります。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.label"
 msgstr "法線角度の許容誤差(cosθ)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.VertexLinkMinNormalDot.tooltip"
 msgstr "SmartLink処理時に、通常と異なる許容誤差を指定できます。2つのうち、厳しい方の値が適用されます。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.label"
 msgstr "マテリアル境界を保持"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveSubMeshBoundaries.tooltip"
 msgstr ""
 "異なるサブメッシュ(マテリアル)に属する頂点同士のマージを防ぎます。\n"
 "アバターなど複数マテリアルのメッシュで、マテリアル境界がにじむのを防ぎます。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.label"
 msgstr "UVシームを保持"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.PreserveUVSeams.tooltip"
 msgstr ""
 "位置は重なっているがUVが不連続な頂点(UVシーム)を固定します。\n"
 "軽量化時にシームをまたいでテクスチャが裂けるのを防ぎます。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.label"
 msgstr "面の突き抜けを抑制"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.ConstrainOptimalPosition.tooltip"
 msgstr ""
 "マージ後の頂点を、元の辺の近傍に制限します。\n"
 "他の面を突き抜けるスパイク(自己交差)の発生を抑えます。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.label"
 msgstr "マージ位置の最大移動量(辺長倍率)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.MaxCollapseDisplacementFactor.tooltip"
 msgstr ""
 "最適位置が辺の中点から「辺長×この倍率」より遠い場合、その位置を棄却します。\n"
 "小さい値ほど厳しく(突き抜けにくく)なりますが、形状の精度がわずかに下がる場合があります。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.label"
 msgstr "テクスチャマッピングを保持(属性考慮誤差)"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UseAttributeAwareError.tooltip"
 msgstr ""
 "UV座標を誤差計算そのものに含めます(属性考慮の二次誤差)。\n"
 "高い削減率でのテクスチャの歪みを大きく軽減しますが、初期化時間とメモリを多く消費します。"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.label"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.label"
 msgstr "UV誤差の重み"
 
-msgid "Meshia.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.tooltip"
+msgid "Touma.MeshSimplification.MeshSimplifierOptions.UvErrorWeight.tooltip"
 msgstr ""
 "幾何形状に対するUV保持の相対的な重要度です。\n"
 "大きい値ほどテクスチャマッピングを強く保持し、小さい値ほど幾何精度を優先します。"

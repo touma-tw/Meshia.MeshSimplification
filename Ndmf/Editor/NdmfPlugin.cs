@@ -1,6 +1,6 @@
 #nullable enable
-using Meshia.MeshSimplification.Ndmf.Editor;
-using Meshia.MeshSimplification.Ndmf.Editor.Preview;
+using Touma.MeshSimplification.Ndmf.Editor;
+using Touma.MeshSimplification.Ndmf.Editor.Preview;
 using nadena.dev.ndmf;
 using nadena.dev.ndmf.preview;
 using System;
@@ -12,7 +12,7 @@ using UnityEngine.Pool;
 
 [assembly: ExportsPlugin(typeof(NdmfPlugin))]
 
-namespace Meshia.MeshSimplification.Ndmf.Editor
+namespace Touma.MeshSimplification.Ndmf.Editor
 {
     class NdmfPlugin : Plugin<NdmfPlugin>
     {

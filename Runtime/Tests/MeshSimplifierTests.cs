@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Meshia.MeshSimplification;
+using Touma.MeshSimplification;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Meshia.MeshSimplification.Tests
+namespace Touma.MeshSimplification.Tests
 {
     public class MeshSimplifierTests
     {

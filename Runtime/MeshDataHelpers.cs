@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using Unity.Burst.CompilerServices;
 using Unity.Collections;
@@ -7,7 +7,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     internal static class MeshDataHelpers
     {

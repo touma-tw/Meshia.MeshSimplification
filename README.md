@@ -1,10 +1,10 @@
 # Meshia Mesh Simplification (Touma Fork)
 
-A fork of [**Meshia Mesh Simplification** by Ram.Type-0](https://github.com/RamType0/Meshia.MeshSimplification), a Burst-accelerated mesh simplification tool/library for Unity and VRChat.
+A fork of [**Meshia Mesh Simplification** by Ram.Type-0](https://github.com/RamType0/Touma.MeshSimplification), a Burst-accelerated mesh simplification tool/library for Unity and VRChat.
 
 This fork keeps the original fast, asynchronous Job System + Burst core and adds **appearance-preserving** options aimed at avatar optimization: reducing texture distortion, suppressing self-intersection (clip-through), and keeping material / UV boundaries intact — plus a live "actual resulting triangle count" readout in the cascading avatar UI.
 
-All original credit goes to Ram.Type-0. See the [original repository](https://github.com/RamType0/Meshia.MeshSimplification) and [documentation](https://ramtype0.github.io/Meshia.MeshSimplification/).
+All original credit goes to Ram.Type-0. See the [original repository](https://github.com/RamType0/Touma.MeshSimplification) and [documentation](https://ramtype0.github.io/Touma.MeshSimplification/).
 
 - [English](#english)
 - [繁體中文](#繁體中文)
@@ -54,7 +54,7 @@ Add the **Touma VPM** repository to VCC or ALCOM, then add the package to your p
 - VPM repository: `https://touma-tw.github.io/vpm/index.json`
 - Listing page (with an Add to VCC button): https://touma-tw.github.io/vpm/
 
-This fork ships under the **same package id** (`com.ramtype0.meshia.mesh-simplification`) as the original, at a **higher version**, so it supersedes the upstream package. Existing `MeshiaMeshSimplifier` components and their settings carry over unchanged, because the package id, namespace, and asset GUIDs are identical.
+This fork ships under the **same package id** (`com.touma.meshia-simplification`) as the original, at a **higher version**, so it supersedes the upstream package. Existing `MeshiaMeshSimplifier` components and their settings carry over unchanged, because the package id, namespace, and asset GUIDs are identical.
 
 Because it shares the package id and GUIDs, it **replaces** the upstream package and cannot be installed side by side with it. If you also have the upstream VPM repository added, make sure this fork's (higher) version is the one that resolves.
 
@@ -67,7 +67,7 @@ Attach `MeshiaMeshSimplifier` to your models (or use the *Meshia Cascading Avata
 #### Use from C#
 
 ```csharp
-using Meshia.MeshSimplification;
+using Touma.MeshSimplification;
 
 Mesh simplifiedMesh = new();
 
@@ -84,7 +84,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ## 繁體中文
 
-這是 [Ram.Type-0 的 Meshia Mesh Simplification](https://github.com/RamType0/Meshia.MeshSimplification) 的 fork。保留原本 Unity Job System + Burst 的高速非同步核心，新增以 **外觀保真** 為目標的選項（主要針對 VRChat 角色）：降低貼圖變形、抑制穿模、保留材質與 UV 邊界，並在 Cascading 介面即時顯示每個物件的實際面數。
+這是 [Ram.Type-0 的 Meshia Mesh Simplification](https://github.com/RamType0/Touma.MeshSimplification) 的 fork。保留原本 Unity Job System + Burst 的高速非同步核心，新增以 **外觀保真** 為目標的選項（主要針對 VRChat 角色）：降低貼圖變形、抑制穿模、保留材質與 UV 邊界，並在 Cascading 介面即時顯示每個物件的實際面數。
 
 ### 這個 fork 新增了什麼
 
@@ -124,7 +124,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 - VPM repository：`https://touma-tw.github.io/vpm/index.json`
 - Listing 網頁（內含 Add to VCC 按鈕）：https://touma-tw.github.io/vpm/
 
-本 fork 以與原版**相同的套件 id**（`com.ramtype0.meshia.mesh-simplification`）、但**更高的版本號**發佈，因此會覆蓋上游套件。由於套件 id、namespace、資產 GUID 都相同，既有的 `MeshiaMeshSimplifier` 元件與其設定會原封不動延續。
+本 fork 以與原版**相同的套件 id**（`com.touma.meshia-simplification`）、但**更高的版本號**發佈，因此會覆蓋上游套件。由於套件 id、namespace、資產 GUID 都相同，既有的 `MeshiaMeshSimplifier` 元件與其設定會原封不動延續。
 
 因為共用套件 id 與 GUID，它是**取代**上游套件、無法與其並存。若你同時加了上游的 VPM repo，請確保解析到的是本 fork（較高）的版本。
 
@@ -132,9 +132,9 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ## 日本語
 
-これは [Ram.Type-0 氏の Meshia Mesh Simplification](https://github.com/RamType0/Meshia.MeshSimplification) のフォークです。Unity Job System + Burst による高速・非同期処理の本体はそのままに、**見た目を保つ**ためのオプション（主に VRChat アバター向け）を追加しています。テクスチャの歪みの軽減、自己交差（メッシュの突き抜け）の抑制、マテリアル／UV 境界の保持に加え、Cascading UI に「実際の三角形数」表示を追加しました。
+これは [Ram.Type-0 氏の Meshia Mesh Simplification](https://github.com/RamType0/Touma.MeshSimplification) のフォークです。Unity Job System + Burst による高速・非同期処理の本体はそのままに、**見た目を保つ**ためのオプション（主に VRChat アバター向け）を追加しています。テクスチャの歪みの軽減、自己交差（メッシュの突き抜け）の抑制、マテリアル／UV 境界の保持に加え、Cascading UI に「実際の三角形数」表示を追加しました。
 
-オリジナルの功績はすべて Ram.Type-0 氏に帰属します。[オリジナルのリポジトリ](https://github.com/RamType0/Meshia.MeshSimplification)・[ドキュメント](https://ramtype0.github.io/Meshia.MeshSimplification/)もご覧ください。
+オリジナルの功績はすべて Ram.Type-0 氏に帰属します。[オリジナルのリポジトリ](https://github.com/RamType0/Touma.MeshSimplification)・[ドキュメント](https://ramtype0.github.io/Touma.MeshSimplification/)もご覧ください。
 
 ### このフォークで追加された機能
 
@@ -176,7 +176,7 @@ VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケー
 - VPM リポジトリ：`https://touma-tw.github.io/vpm/index.json`
 - リスティングページ（Add to VCC ボタンあり）：https://touma-tw.github.io/vpm/
 
-本フォークは、オリジナルと**同じパッケージ ID**（`com.ramtype0.meshia.mesh-simplification`）で、**より高いバージョン**として配布されるため、上流パッケージを上書きします。パッケージ ID・名前空間・アセット GUID が同一のため、既存の `MeshiaMeshSimplifier` コンポーネントとその設定はそのまま引き継がれます。
+本フォークは、オリジナルと**同じパッケージ ID**（`com.touma.meshia-simplification`）で、**より高いバージョン**として配布されるため、上流パッケージを上書きします。パッケージ ID・名前空間・アセット GUID が同一のため、既存の `MeshiaMeshSimplifier` コンポーネントとその設定はそのまま引き継がれます。
 
 パッケージ ID と GUID を共有するため、上流パッケージを**置き換える**形になり、両方を同時にインストールすることはできません。上流の VPM リポジトリも追加している場合は、本フォークの（より高い）バージョンが解決されるようにしてください。
 
@@ -189,7 +189,7 @@ VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケー
 #### C#から呼び出す
 
 ```csharp
-using Meshia.MeshSimplification;
+using Touma.MeshSimplification;
 
 Mesh simplifiedMesh = new();
 

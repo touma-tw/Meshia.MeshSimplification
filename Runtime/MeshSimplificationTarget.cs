@@ -1,8 +1,8 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using UnityEngine;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     /// <summary>
     /// Represents a target for mesh simplification.

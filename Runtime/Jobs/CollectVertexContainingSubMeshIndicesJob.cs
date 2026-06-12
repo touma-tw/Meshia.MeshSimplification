@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     [BurstCompile]
     struct CollectVertexContainingSubMeshIndicesJob : IJob

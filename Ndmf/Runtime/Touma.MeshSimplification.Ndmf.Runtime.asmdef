@@ -1,8 +1,8 @@
 {
-    "name": "Meshia.MeshSimplification.Ndmf.Runtime",
-    "rootNamespace": "Meshia.MeshSimplification.Ndmf",
+    "name": "Touma.MeshSimplification.Ndmf.Runtime",
+    "rootNamespace": "Touma.MeshSimplification.Ndmf",
     "references": [
-        "Meshia.MeshSimplification.Runtime",
+        "Touma.MeshSimplification.Runtime",
         "VRC.SDKBase",
         "nadena.dev.modular-avatar.core",
         "nadena.dev.ndmf.runtime",

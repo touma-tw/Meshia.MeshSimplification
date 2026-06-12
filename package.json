@@ -1,13 +1,13 @@
 {
-  "name": "com.ramtype0.meshia.mesh-simplification",
+  "name": "com.touma.meshia-simplification",
   "displayName": "Meshia Mesh Simplification (Touma Fork)",
   "version": "4.0.0",
   "unity": "2022.3",
-  "description": "Burst accelerated mesh simplification.",
+  "description": "Burst accelerated mesh simplification with texture-aware (attribute) QEM. Fork of Meshia, originally created by Ram.Type-0 (https://github.com/RamType0).",
   "vrchatVersion": "2022.1.1",
   "author": {
-    "name": "Ram.Type-0",
-    "url": "https://github.com/RamType0"
+    "name": "touma-tw",
+    "url": "https://github.com/touma-tw"
   },
   "keywords": [
     "mesh",

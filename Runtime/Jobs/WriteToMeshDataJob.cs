@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Burst;
 using Unity.Burst.CompilerServices;
 using Unity.Collections;
@@ -7,7 +7,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     [BurstCompile]
     struct WriteToMeshDataJob : IJob

@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Rendering;
 
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     public struct MeshSimplifier : INativeDisposable
     {
@@ -285,7 +285,7 @@ namespace Meshia.MeshSimplification
             Mesh.ApplyAndDisposeWritableMeshData(simplifiedMeshDataArray, destination, MeshUpdateFlags.DontValidateIndices);
             CopyBoundsAndBindposes(mesh, destination);
 
-            // https://github.com/RamType0/Meshia.MeshSimplification/issues/23
+            // https://github.com/RamType0/Touma.MeshSimplification/issues/23
             // Setting blend shapes on a mesh with no vertices possibly causes crash.
             if (destination.vertexCount != 0)
             {

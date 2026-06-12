@@ -1,6 +1,6 @@
-﻿using Unity.Mathematics;
+using Unity.Mathematics;
 using Plane = Unity.Mathematics.Geometry.Plane;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     struct ErrorQuadric
     {

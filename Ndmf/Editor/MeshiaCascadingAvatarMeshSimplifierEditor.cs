@@ -6,11 +6,11 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Meshia.MeshSimplification.Ndmf.Editor.Preview;
+using Touma.MeshSimplification.Ndmf.Editor.Preview;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 
-namespace Meshia.MeshSimplification.Ndmf.Editor
+namespace Touma.MeshSimplification.Ndmf.Editor
 {
     [CustomEditor(typeof(MeshiaCascadingAvatarMeshSimplifier))]
     internal class MeshiaCascadingAvatarMeshSimplifierEditor : UnityEditor.Editor

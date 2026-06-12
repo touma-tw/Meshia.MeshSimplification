@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: e48fc8f3a5ab1aa459308c32de13a65c
+guid: d372df7975b74cdca6b18df11c4614fe
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - editorVisualTreeAsset: {fileID: 9197481963319205126, guid: 3152adf210475e149955bf3e826b403d,
+  - editorVisualTreeAsset: {fileID: 9197481963319205126, guid: f31ebc9e6ad7419f878a44e4c5bb93c0,
       type: 3}
-  - entryEditorVisualTreeAsset: {fileID: 9197481963319205126, guid: 89f639b7d364db64283afa25c01d1ae3,
+  - entryEditorVisualTreeAsset: {fileID: 9197481963319205126, guid: ba9428ca9ad04d75bed28f0a6f34ffb5,
       type: 3}
   executionOrder: 0
   icon: {instanceID: 0}

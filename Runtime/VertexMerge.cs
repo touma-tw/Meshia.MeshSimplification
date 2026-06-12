@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using Unity.Mathematics;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     struct VertexMerge : IComparable<VertexMerge>
     {

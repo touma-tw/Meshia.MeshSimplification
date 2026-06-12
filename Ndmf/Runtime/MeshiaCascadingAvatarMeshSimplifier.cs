@@ -12,7 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using Unity.Mathematics;
 
-namespace Meshia.MeshSimplification.Ndmf
+namespace Touma.MeshSimplification.Ndmf
 {
     [AddComponentMenu("Meshia Mesh Simplification/Meshia Cascading Avatar Mesh Simplifier")]
     public class MeshiaCascadingAvatarMeshSimplifier : MonoBehaviour

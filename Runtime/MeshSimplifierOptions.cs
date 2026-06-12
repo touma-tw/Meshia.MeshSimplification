@@ -1,11 +1,11 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using UnityEngine;
 using Unity.Collections;
 using Unity.Mathematics;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Runtime.CompilerServices;
-namespace Meshia.MeshSimplification
+namespace Touma.MeshSimplification
 {
     [Serializable]
     public struct MeshSimplifierOptions : IEquatable<MeshSimplifierOptions>
