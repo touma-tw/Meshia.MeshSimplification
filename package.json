@@ -1,7 +1,7 @@
 {
   "name": "com.touma.meshia-simplification",
   "displayName": "Mesh Simplification - Touma Fork",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "unity": "2022.3",
   "description": "Burst accelerated mesh simplification with texture-aware (attribute) QEM. Fork of Meshia, originally created by Ram.Type-0 (https://github.com/RamType0).",
   "vrchatVersion": "2022.1.1",

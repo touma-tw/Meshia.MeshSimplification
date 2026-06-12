@@ -1,10 +1,10 @@
-# Meshia Mesh Simplification (Touma Fork)
+# Mesh Simplification - Touma Fork
 
-A fork of [**Meshia Mesh Simplification** by Ram.Type-0](https://github.com/RamType0/Touma.MeshSimplification), a Burst-accelerated mesh simplification tool/library for Unity and VRChat.
+A fork of [**Meshia Mesh Simplification** by Ram.Type-0](https://github.com/RamType0/Meshia.MeshSimplification), a Burst-accelerated mesh simplification tool/library for Unity and VRChat.
 
 This fork keeps the original fast, asynchronous Job System + Burst core and adds **appearance-preserving** options aimed at avatar optimization: reducing texture distortion, suppressing self-intersection (clip-through), and keeping material / UV boundaries intact — plus a live "actual resulting triangle count" readout in the cascading avatar UI.
 
-All original credit goes to Ram.Type-0. See the [original repository](https://github.com/RamType0/Touma.MeshSimplification) and [documentation](https://ramtype0.github.io/Touma.MeshSimplification/).
+All original credit goes to Ram.Type-0. See the [original repository](https://github.com/RamType0/Meshia.MeshSimplification) and [documentation](https://ramtype0.github.io/Meshia.MeshSimplification/).
 
 - [English](#english)
 - [繁體中文](#繁體中文)
@@ -41,11 +41,11 @@ Set the six options above to `false` / their legacy values. By default this fork
 
 #### Cascading avatar UI: actual triangle count
 
-In the **Meshia Cascading Avatar Mesh Simplifier**, each renderer row's numeric field shows the **actual resulting triangle count** from the NDMF preview (not just the requested target). If a preserve option keeps the result above your target — e.g. you ask for `0` but it can only reach `12345` — the field shows the real value and highlights it. The field stays editable: focus it to type an exact target.
+In the **Avatar Mesh Simplification - Touma Fork**, each renderer row's numeric field shows the **actual resulting triangle count** from the NDMF preview (not just the requested target). If a preserve option keeps the result above your target — e.g. you ask for `0` but it can only reach `12345` — the field shows the real value and highlights it. The field stays editable: focus it to type an exact target.
 
 > Requires NDMF preview to be enabled (the same preview that powers the total count).
 
-### Installation
+### Installation (new users)
 
 Add the **Touma VPM** repository to VCC or ALCOM, then add the package to your project.
 
@@ -54,15 +54,23 @@ Add the **Touma VPM** repository to VCC or ALCOM, then add the package to your p
 - VPM repository: `https://touma-tw.github.io/vpm/index.json`
 - Listing page (with an Add to VCC button): https://touma-tw.github.io/vpm/
 
-This fork ships under the **same package id** (`com.touma.meshia-simplification`) as the original, at a **higher version**, so it supersedes the upstream package. Existing `MeshiaMeshSimplifier` components and their settings carry over unchanged, because the package id, namespace, and asset GUIDs are identical.
+This fork is an **independent package** (`com.touma.meshia-simplification`) with its own namespace and asset GUIDs. It does **not** override or conflict with the original Meshia package, and the two can even be installed from separate VPM repositories at the same time.
 
-Because it shares the package id and GUIDs, it **replaces** the upstream package and cannot be installed side by side with it. If you also have the upstream VPM repository added, make sure this fork's (higher) version is the one that resolves.
+### Migrating from the original Meshia (or an earlier build of this fork)
+
+Earlier builds of this fork were distributed under the original `com.ramtype0.meshia.mesh-simplification` id. If you used that build, or the original Meshia, a built-in tool copies your component settings onto this fork's components:
+
+1. **Keep the old package installed** and add `com.touma.meshia-simplification` next to it (they coexist).
+2. Select a GameObject that carries an old component — a **"Migrate to Touma Fork"** button appears at the top of its Inspector; click it. To convert a whole avatar at once, use **Tools ▸ Mesh Simplification - Touma Fork ▸ Migrate old settings (selected hierarchy)** on the avatar root. Each old component is replaced in place by its new equivalent, keeping its settings.
+3. When everything looks correct, **uninstall the old package**.
+
+> Migration must run while the old package is still installed — the old components have to be loadable, not shown as "missing script".
 
 ### How to use
 
 #### NDMF integration
 
-Attach `MeshiaMeshSimplifier` to your models (or use the *Meshia Cascading Avatar Mesh Simplifier* for whole avatars). You can preview the result in EditMode.
+Attach `MeshSimplifier` to your models (or use the *Avatar Mesh Simplification - Touma Fork* for whole avatars). You can preview the result in EditMode.
 
 #### Use from C#
 
@@ -84,7 +92,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ## 繁體中文
 
-這是 [Ram.Type-0 的 Meshia Mesh Simplification](https://github.com/RamType0/Touma.MeshSimplification) 的 fork。保留原本 Unity Job System + Burst 的高速非同步核心，新增以 **外觀保真** 為目標的選項（主要針對 VRChat 角色）：降低貼圖變形、抑制穿模、保留材質與 UV 邊界，並在 Cascading 介面即時顯示每個物件的實際面數。
+這是 [Ram.Type-0 的 Meshia Mesh Simplification](https://github.com/RamType0/Meshia.MeshSimplification) 的 fork。保留原本 Unity Job System + Burst 的高速非同步核心，新增以 **外觀保真** 為目標的選項（主要針對 VRChat 角色）：降低貼圖變形、抑制穿模、保留材質與 UV 邊界，並在 Cascading 介面即時顯示每個物件的實際面數。
 
 ### 這個 fork 新增了什麼
 
@@ -113,9 +121,9 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 #### Cascading 介面：實際面數
 
-在 **Meshia Cascading Avatar Mesh Simplifier** 的清單中，每個 renderer 那一列的數字欄位會顯示 NDMF preview 的**實際簡化面數**（而非只是你要求的目標）。若保留選項讓結果降不到目標——例如你設 `0` 但只能到 `12345`——欄位會顯示實際值並標色提醒。欄位仍可編輯：點進去即可直接輸入目標。需開啟 NDMF preview。
+在 **Avatar Mesh Simplification - Touma Fork** 的清單中，每個 renderer 那一列的數字欄位會顯示 NDMF preview 的**實際簡化面數**（而非只是你要求的目標）。若保留選項讓結果降不到目標——例如你設 `0` 但只能到 `12345`——欄位會顯示實際值並標色提醒。欄位仍可編輯：點進去即可直接輸入目標。需開啟 NDMF preview。
 
-### 安裝
+### 安裝（新使用者）
 
 在 VCC 或 ALCOM 加入 **Touma VPM** repository，再把套件加進你的專案。
 
@@ -124,17 +132,25 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 - VPM repository：`https://touma-tw.github.io/vpm/index.json`
 - Listing 網頁（內含 Add to VCC 按鈕）：https://touma-tw.github.io/vpm/
 
-本 fork 以與原版**相同的套件 id**（`com.touma.meshia-simplification`）、但**更高的版本號**發佈，因此會覆蓋上游套件。由於套件 id、namespace、資產 GUID 都相同，既有的 `MeshiaMeshSimplifier` 元件與其設定會原封不動延續。
+本 fork 是**獨立套件**（`com.touma.meshia-simplification`），有自己的 namespace 與資產 GUID，**不會覆蓋或衝突**原版 Meshia，兩者甚至可以從不同 VPM repo 同時安裝。
 
-因為共用套件 id 與 GUID，它是**取代**上游套件、無法與其並存。若你同時加了上游的 VPM repo，請確保解析到的是本 fork（較高）的版本。
+### 從原版 Meshia（或本 fork 的舊版）遷移
+
+本 fork 早期版本是用原版 id `com.ramtype0.meshia.mesh-simplification` 發佈的。如果你用的是那個版本、或原版 Meshia，內建工具可把你的元件設定搬到本 fork 的新元件上：
+
+1. **先保留舊套件**，再把 `com.touma.meshia-simplification` 一起裝上（可並存）。
+2. 選取掛著舊元件的物件——它的 Inspector 最上方會出現 **「Migrate to Touma Fork」** 按鈕，點下去即可。要一次處理整個 avatar，對 avatar 根物件使用 **Tools ▸ Mesh Simplification - Touma Fork ▸ Migrate old settings (selected hierarchy)**。每個舊元件都會原地換成對應的新元件並保留設定。
+3. 確認一切正常後，**移除舊套件**。
+
+> 遷移必須在舊套件仍安裝的狀態下進行——舊元件要能載入，不能是「missing script」。
 
 ---
 
 ## 日本語
 
-これは [Ram.Type-0 氏の Meshia Mesh Simplification](https://github.com/RamType0/Touma.MeshSimplification) のフォークです。Unity Job System + Burst による高速・非同期処理の本体はそのままに、**見た目を保つ**ためのオプション（主に VRChat アバター向け）を追加しています。テクスチャの歪みの軽減、自己交差（メッシュの突き抜け）の抑制、マテリアル／UV 境界の保持に加え、Cascading UI に「実際の三角形数」表示を追加しました。
+これは [Ram.Type-0 氏の Meshia Mesh Simplification](https://github.com/RamType0/Meshia.MeshSimplification) のフォークです。Unity Job System + Burst による高速・非同期処理の本体はそのままに、**見た目を保つ**ためのオプション（主に VRChat アバター向け）を追加しています。テクスチャの歪みの軽減、自己交差（メッシュの突き抜け）の抑制、マテリアル／UV 境界の保持に加え、Cascading UI に「実際の三角形数」表示を追加しました。
 
-オリジナルの功績はすべて Ram.Type-0 氏に帰属します。[オリジナルのリポジトリ](https://github.com/RamType0/Touma.MeshSimplification)・[ドキュメント](https://ramtype0.github.io/Touma.MeshSimplification/)もご覧ください。
+オリジナルの功績はすべて Ram.Type-0 氏に帰属します。[オリジナルのリポジトリ](https://github.com/RamType0/Meshia.MeshSimplification)・[ドキュメント](https://ramtype0.github.io/Meshia.MeshSimplification/)もご覧ください。
 
 ### このフォークで追加された機能
 
@@ -163,11 +179,11 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 #### Cascading UI：実際の三角形数
 
-**Meshia Cascading Avatar Mesh Simplifier** のリストでは、各 renderer の行の数値フィールドが、要求した目標値ではなく **NDMF プレビューによる実際の三角形数** を表示します。保持オプションにより目標まで下がらない場合——たとえば `0` を指定しても `12345` までしか下がらない場合——実際の値を色付きで表示します。フィールドは編集可能で、フォーカスすれば正確な目標値を入力できます。
+**Avatar Mesh Simplification - Touma Fork** のリストでは、各 renderer の行の数値フィールドが、要求した目標値ではなく **NDMF プレビューによる実際の三角形数** を表示します。保持オプションにより目標まで下がらない場合——たとえば `0` を指定しても `12345` までしか下がらない場合——実際の値を色付きで表示します。フィールドは編集可能で、フォーカスすれば正確な目標値を入力できます。
 
 > NDMF プレビューを有効にする必要があります（合計数を表示しているものと同じプレビューです）。
 
-### インストール
+### インストール（新規ユーザー）
 
 VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケージをプロジェクトに追加します。
 
@@ -176,15 +192,23 @@ VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケー
 - VPM リポジトリ：`https://touma-tw.github.io/vpm/index.json`
 - リスティングページ（Add to VCC ボタンあり）：https://touma-tw.github.io/vpm/
 
-本フォークは、オリジナルと**同じパッケージ ID**（`com.touma.meshia-simplification`）で、**より高いバージョン**として配布されるため、上流パッケージを上書きします。パッケージ ID・名前空間・アセット GUID が同一のため、既存の `MeshiaMeshSimplifier` コンポーネントとその設定はそのまま引き継がれます。
+本フォークは**独立したパッケージ**（`com.touma.meshia-simplification`）で、独自の名前空間とアセット GUID を持ちます。オリジナルの Meshia を上書き・競合することはなく、別々の VPM リポジトリから同時に導入することもできます。
 
-パッケージ ID と GUID を共有するため、上流パッケージを**置き換える**形になり、両方を同時にインストールすることはできません。上流の VPM リポジトリも追加している場合は、本フォークの（より高い）バージョンが解決されるようにしてください。
+### オリジナル Meshia（または本フォークの旧バージョン）からの移行
+
+本フォークの初期バージョンは、オリジナルの id `com.ramtype0.meshia.mesh-simplification` で配布されていました。その版、またはオリジナルの Meshia を使っていた場合、内蔵ツールがコンポーネントの設定を本フォークのコンポーネントへコピーします。
+
+1. **旧パッケージはそのまま残し**、`com.touma.meshia-simplification` を併せて導入します（共存できます）。
+2. 旧コンポーネントが付いた GameObject を選択すると、Inspector の上部に **「Migrate to Touma Fork」** ボタンが表示されるのでクリックします。アバター全体を一度に変換するには、アバターのルートで **Tools ▸ Mesh Simplification - Touma Fork ▸ Migrate old settings (selected hierarchy)** を使います。各旧コンポーネントは設定を保ったまま、その場で新コンポーネントに置き換えられます。
+3. すべて問題なければ、**旧パッケージをアンインストール**します。
+
+> 移行は旧パッケージがインストールされている間に行う必要があります（旧コンポーネントが「missing script」ではなく読み込める状態であること）。
 
 ### 使い方
 
 #### NDMF統合
 
-`MeshiaMeshSimplifier`（アバター全体には *Meshia Cascading Avatar Mesh Simplifier*）をモデルにアタッチします。エディターで軽量化結果をプレビューしながらパラメーターを調整できます。
+`MeshSimplifier`（アバター全体には *Avatar Mesh Simplification - Touma Fork*）をモデルにアタッチします。エディターで軽量化結果をプレビューしながらパラメーターを調整できます。
 
 #### C#から呼び出す
 
@@ -208,7 +232,7 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 1. Bump `version` in `package.json`, commit and push to `main`.
 2. Actions → **Publish Release** → **Run workflow** (or push a tag equal to that version). It builds the package zip and publishes a GitHub Release.
-3. The VPM listing repo (`touma-tw/vpm`) aggregates this package from its Releases. Keep the version ahead of upstream so it wins resolution.
+3. The VPM listing repo (`touma-tw/vpm`) aggregates this package from its Releases.
 
 One-time setup: Settings → Actions → General → Workflow permissions → **Read and write**.
 
@@ -216,7 +240,7 @@ One-time setup: Settings → Actions → General → Workflow permissions → **
 
 1. `package.json` の `version` を上げて `main` にコミット＆プッシュ。
 2. Actions → **Publish Release** → **Run workflow**（または同じバージョンのタグを push）。パッケージ zip をビルドし、GitHub Release を公開します。
-3. VPM リスト用リポジトリ（`touma-tw/vpm`）が Releases からこのパッケージを取り込みます。上流より高いバージョンを維持してください。
+3. VPM リスト用リポジトリ（`touma-tw/vpm`）が Releases からこのパッケージを取り込みます。
 
 初回のみ：Settings → Actions → General → Workflow permissions を **Read and write** に設定してください。
 
