@@ -12,25 +12,25 @@ using UnityEditor.UIElements;
 
 namespace Touma.MeshSimplification.Ndmf.Editor
 {
-    [CustomEditor(typeof(CascadingAvatarMeshSimplifier))]
-    internal class CascadingAvatarMeshSimplifierEditor : UnityEditor.Editor
+    [CustomEditor(typeof(AvatarMeshSimplifierTouma))]
+    internal class AvatarMeshSimplifierToumaEditor : UnityEditor.Editor
     {
         [SerializeField] VisualTreeAsset editorVisualTreeAsset = null!;
         [SerializeField] VisualTreeAsset entryEditorVisualTreeAsset = null!;
-        private CascadingAvatarMeshSimplifier Target => (CascadingAvatarMeshSimplifier)target;
+        private AvatarMeshSimplifierTouma Target => (AvatarMeshSimplifierTouma)target;
 
-        private SerializedProperty AutoAdjustEnabledProperty => serializedObject.FindProperty(nameof(CascadingAvatarMeshSimplifier.AutoAdjustEnabled));
-        private SerializedProperty TargetTriangleCountProperty => serializedObject.FindProperty(nameof(CascadingAvatarMeshSimplifier.TargetTriangleCount));
-        private SerializedProperty EntriesProperty => serializedObject.FindProperty(nameof(CascadingAvatarMeshSimplifier.Entries));
+        private SerializedProperty AutoAdjustEnabledProperty => serializedObject.FindProperty(nameof(AvatarMeshSimplifierTouma.AutoAdjustEnabled));
+        private SerializedProperty TargetTriangleCountProperty => serializedObject.FindProperty(nameof(AvatarMeshSimplifierTouma.TargetTriangleCount));
+        private SerializedProperty EntriesProperty => serializedObject.FindProperty(nameof(AvatarMeshSimplifierTouma.Entries));
 
 
-        [MenuItem("GameObject/Mesh Simplification/Cascading Avatar Mesh Simplifier", false, 0)]
-        static void AddCascadingAvatarMeshSimplifier()
+        [MenuItem("GameObject/Mesh Simplification/Avatar Mesh Simplification - Touma Fork", false, 0)]
+        static void AddAvatarMeshSimplifierTouma()
         {
-            var go = new GameObject("Cascading Avatar Mesh Simplifier");
-            go.AddComponent<CascadingAvatarMeshSimplifier>();
+            var go = new GameObject("Avatar Mesh Simplification - Touma Fork");
+            go.AddComponent<AvatarMeshSimplifierTouma>();
             go.transform.parent = Selection.activeGameObject.transform;
-            Undo.RegisterCreatedObjectUndo(go, "Create Cascading Avatar Mesh Simplifier");
+            Undo.RegisterCreatedObjectUndo(go, "Create Avatar Mesh Simplification - Touma Fork");
         }
         private void OnEnable()
         {
@@ -168,8 +168,8 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 for (int i = 0; i < arraySize; i++)
                 {
                     var entryProperty = entriesProperty.GetArrayElementAtIndex(i);
-                    entryProperty.FindPropertyRelative(nameof(CascadingAvatarMeshSimplifierRendererEntry.Enabled)).boolValue = true;
-                    entryProperty.FindPropertyRelative(nameof(CascadingAvatarMeshSimplifierRendererEntry.Fixed)).boolValue = false;
+                    entryProperty.FindPropertyRelative(nameof(AvatarMeshSimplifierToumaRendererEntry.Enabled)).boolValue = true;
+                    entryProperty.FindPropertyRelative(nameof(AvatarMeshSimplifierToumaRendererEntry.Fixed)).boolValue = false;
                 }
 
                 SetQualityAll(quality);
@@ -195,7 +195,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 {
                     targetObjectField.style.display = DisplayStyle.Flex;
                     targetObjectField.value = targetRenderer;
-                    targetObjectField.EnableInClassList("editor-only", CascadingAvatarMeshSimplifierRendererEntry.IsEditorOnlyInHierarchy(targetRenderer.gameObject));
+                    targetObjectField.EnableInClassList("editor-only", AvatarMeshSimplifierToumaRendererEntry.IsEditorOnlyInHierarchy(targetRenderer.gameObject));
 
                     targetPathField.style.display = DisplayStyle.None;
                 }
@@ -228,7 +228,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 }
 
                 var humanBodyBoneIndex = 0;
-                var preserveBorderEdgesBonesProperty = EntriesProperty.GetArrayElementAtIndex(index).FindPropertyRelative(nameof(CascadingAvatarMeshSimplifierRendererEntry.PreserveBorderEdgesBones));
+                var preserveBorderEdgesBonesProperty = EntriesProperty.GetArrayElementAtIndex(index).FindPropertyRelative(nameof(AvatarMeshSimplifierToumaRendererEntry.PreserveBorderEdgesBones));
                 var preserveBorderEdgesBones = preserveBorderEdgesBonesProperty.ulongValue;
                 foreach (var preserveBorderEdgesBoneToggle in preserveBorderEdgesBonesFoldout.Children().OfType<Toggle>())
                 {
@@ -282,7 +282,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                     var newTarget = Mathf.Clamp(changeEvent.newValue, 0, maxTriangleCount);
 
                     var editedEntryProperty = EntriesProperty.GetArrayElementAtIndex(editedIndex);
-                    editedEntryProperty.FindPropertyRelative(nameof(CascadingAvatarMeshSimplifierRendererEntry.TargetTriangleCount)).intValue = newTarget;
+                    editedEntryProperty.FindPropertyRelative(nameof(AvatarMeshSimplifierToumaRendererEntry.TargetTriangleCount)).intValue = newTarget;
                     serializedObject.ApplyModifiedProperties();
 
                     if (AutoAdjustEnabledProperty.boolValue)
@@ -342,7 +342,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                     {
                         if(itemRoot.userData is int itemIndex)
                         {
-                            var preserveBorderEdgesBonesProperty = EntriesProperty.GetArrayElementAtIndex(itemIndex).FindPropertyRelative(nameof(CascadingAvatarMeshSimplifierRendererEntry.PreserveBorderEdgesBones));
+                            var preserveBorderEdgesBonesProperty = EntriesProperty.GetArrayElementAtIndex(itemIndex).FindPropertyRelative(nameof(AvatarMeshSimplifierToumaRendererEntry.PreserveBorderEdgesBones));
                             serializedObject.Update();
                             var currentMask = preserveBorderEdgesBonesProperty.ulongValue;
                             if (changeEvent.newValue)
@@ -365,20 +365,20 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 return itemRoot;
             };
 
-            ndmfPreviewToggle.SetValueWithoutNotify(CascadingAvatarMeshSimplifierPreview.PreviewControlNode.IsEnabled.Value);
+            ndmfPreviewToggle.SetValueWithoutNotify(AvatarMeshSimplifierToumaPreview.PreviewControlNode.IsEnabled.Value);
             ndmfPreviewToggle.RegisterValueChangedCallback(changeEvent =>
             {
-                CascadingAvatarMeshSimplifierPreview.PreviewControlNode.IsEnabled.Value = changeEvent.newValue;
+                AvatarMeshSimplifierToumaPreview.PreviewControlNode.IsEnabled.Value = changeEvent.newValue;
             });
 
             Action<bool> onNdmfPreviewEnabledChanged = (newValue) =>
             {
                 ndmfPreviewToggle.SetValueWithoutNotify(newValue);
             };
-            CascadingAvatarMeshSimplifierPreview.PreviewControlNode.IsEnabled.OnChange += onNdmfPreviewEnabledChanged;
+            AvatarMeshSimplifierToumaPreview.PreviewControlNode.IsEnabled.OnChange += onNdmfPreviewEnabledChanged;
             ndmfPreviewToggle.RegisterCallback<DetachFromPanelEvent>(detachFromPanelEvent =>
             {
-                CascadingAvatarMeshSimplifierPreview.PreviewControlNode.IsEnabled.OnChange -= onNdmfPreviewEnabledChanged;
+                AvatarMeshSimplifierToumaPreview.PreviewControlNode.IsEnabled.OnChange -= onNdmfPreviewEnabledChanged;
             });
 
 
@@ -458,7 +458,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
             }
             return totalCount;
         }
-        private bool TryGetSimplifiedTriangleCount(CascadingAvatarMeshSimplifierRendererEntry entry, bool preferPreview, out int triangleCount)
+        private bool TryGetSimplifiedTriangleCount(AvatarMeshSimplifierToumaRendererEntry entry, bool preferPreview, out int triangleCount)
         {
 
             if (!entry.Enabled)
@@ -470,7 +470,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 triangleCount = -1;
                 return false;
             }
-            if (preferPreview && CascadingAvatarMeshSimplifierPreview.TriangleCountCache.TryGetValue(targetRenderer, out var triCount))
+            if (preferPreview && AvatarMeshSimplifierToumaPreview.TriangleCountCache.TryGetValue(targetRenderer, out var triCount))
             {
                 triangleCount = triCount.simplified;
                 return true;
@@ -490,14 +490,14 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 }
             }
         }
-        private bool TryGetOriginalTriangleCount(CascadingAvatarMeshSimplifierRendererEntry entry, bool preferPreview, out int triangleCount)
+        private bool TryGetOriginalTriangleCount(AvatarMeshSimplifierToumaRendererEntry entry, bool preferPreview, out int triangleCount)
         {
             if (entry.GetTargetRenderer(Target) is not { } targetRenderer)
             {
                 triangleCount = -1;
                 return false;
             }
-            if (preferPreview && CascadingAvatarMeshSimplifierPreview.TriangleCountCache.TryGetValue(targetRenderer, out var triCount))
+            if (preferPreview && AvatarMeshSimplifierToumaPreview.TriangleCountCache.TryGetValue(targetRenderer, out var triCount))
             {
                 triangleCount = triCount.proxy;
                 return true;
@@ -606,7 +606,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                     var entryProperty = entriesProperty.GetArrayElementAtIndex(i);
 
                     TryGetOriginalTriangleCount(entry, true, out var originalTriangleCount);
-                    var targetTriangleCountProperty = entryProperty.FindPropertyRelative(nameof(CascadingAvatarMeshSimplifierRendererEntry.TargetTriangleCount));
+                    var targetTriangleCountProperty = entryProperty.FindPropertyRelative(nameof(AvatarMeshSimplifierToumaRendererEntry.TargetTriangleCount));
 
 
                     targetTriangleCountProperty.intValue = (int)(originalTriangleCount * ratio);

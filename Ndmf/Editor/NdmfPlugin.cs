@@ -25,7 +25,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
             InPhase(BuildPhase.Resolving)
                 .Run("Resolve References", context =>
                 {
-                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<CascadingAvatarMeshSimplifier>(true);
+                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<AvatarMeshSimplifierTouma>(true);
                     foreach (var cascadingMeshSimplifier in meshiaCascadingMeshSimplifiers)
                     {
                         cascadingMeshSimplifier.ResolveReferences();
@@ -41,7 +41,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                     var meshiaMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<MeshSimplifier>(true);
 #if ENABLE_MODULAR_AVATAR
                     
-                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<CascadingAvatarMeshSimplifier>(true);
+                    var meshiaCascadingMeshSimplifiers = context.AvatarRootObject.GetComponentsInChildren<AvatarMeshSimplifierTouma>(true);
 #endif
 
                     using (ListPool<(Mesh Mesh, MeshSimplificationTarget Target, MeshSimplifierOptions Options, BitArray? preserveBorderEdgesBoneIndices, Mesh Destination)>.Get(out var parameters))
@@ -66,7 +66,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                                 var target = new MeshSimplificationTarget() { Kind = MeshSimplificationTargetKind.AbsoluteTriangleCount, Value = entry.TargetTriangleCount };
                                 Mesh simplifiedMesh = new();
 
-                                var preserveBorderEdgesBoneIndices = CascadingAvatarMeshSimplifier.GetPreserveBorderEdgesBoneIndices(context.AvatarRootObject, meshiaCascadingMeshSimplifier, entry);
+                                var preserveBorderEdgesBoneIndices = AvatarMeshSimplifierTouma.GetPreserveBorderEdgesBoneIndices(context.AvatarRootObject, meshiaCascadingMeshSimplifier, entry);
 
                                 parameters.Add((mesh, target, entry.Options, preserveBorderEdgesBoneIndices, simplifiedMesh));
                             }
@@ -119,7 +119,7 @@ namespace Touma.MeshSimplification.Ndmf.Editor
                 {
                     new MeshSimplifierPreview(),
 #if ENABLE_MODULAR_AVATAR
-                    new CascadingAvatarMeshSimplifierPreview(),
+                    new AvatarMeshSimplifierToumaPreview(),
 #endif
                 })
             ;
