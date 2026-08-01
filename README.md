@@ -47,6 +47,15 @@ In the **Avatar Mesh Simplification - Touma Fork**, each renderer row's numeric 
 
 ### Installation (new users)
 
+#### Requirements
+
+- **Unity 2022.3** and the VRChat SDK.
+- **NDMF** (`nadena.dev.ndmf`) — **required**. It drives the non-destructive build and the EditMode preview.
+- **Modular Avatar** (`nadena.dev.modular-avatar`) — **required** for the cascading *Avatar Mesh Simplification - Touma Fork* component, which is compiled only when Modular Avatar is present.
+- **CL4EE** (`com.anatawa12.custom-localization-for-editor-extension`) — nothing to do: the Touma VPM listing carries this dependency, so VCC / ALCOM resolves it for you.
+
+NDMF and Modular Avatar are already present in essentially every modern VRChat avatar project. Installing this package into a project without them is not supported.
+
 Add the **Touma VPM** repository to VCC or ALCOM, then add the package to your project.
 
 [![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](https://touma-tw.github.io/vpm/)
@@ -125,6 +134,15 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 
 ### 安裝（新使用者）
 
+#### 需求環境
+
+- **Unity 2022.3** 與 VRChat SDK。
+- **NDMF**（`nadena.dev.ndmf`）—— **必要**。非破壞性建置與 EditMode 預覽都靠它。
+- **Modular Avatar**（`nadena.dev.modular-avatar`）—— 使用 Cascading 的 *Avatar Mesh Simplification - Touma Fork* 元件時**必要**；該元件只有在專案裝了 Modular Avatar 時才會被編譯出來。
+- **CL4EE**（`com.anatawa12.custom-localization-for-editor-extension`）—— 不必手動處理：Touma VPM listing 已內含這個相依套件，VCC / ALCOM 會自動一併安裝。
+
+現在的 VRChat 角色專案基本上都已經裝了 NDMF 與 Modular Avatar。本套件不支援安裝在沒有它們的專案。
+
 在 VCC 或 ALCOM 加入 **Touma VPM** repository，再把套件加進你的專案。
 
 [![Add to VCC / ALCOM](https://img.shields.io/badge/Add%20to%20VCC%20%2F%20ALCOM-Touma%20VPM-2188FF?style=for-the-badge)](https://touma-tw.github.io/vpm/)
@@ -184,6 +202,15 @@ MeshSimplifier.Simplify(originalMesh, target, options, simplifiedMesh);
 > NDMF プレビューを有効にする必要があります（合計数を表示しているものと同じプレビューです）。
 
 ### インストール（新規ユーザー）
+
+#### 動作要件
+
+- **Unity 2022.3** と VRChat SDK。
+- **NDMF**（`nadena.dev.ndmf`）—— **必須**。非破壊ビルドと EditMode プレビューはこれに依存します。
+- **Modular Avatar**（`nadena.dev.modular-avatar`）—— Cascading の *Avatar Mesh Simplification - Touma Fork* コンポーネントには**必須**です。このコンポーネントは Modular Avatar が導入されている場合にのみコンパイルされます。
+- **CL4EE**（`com.anatawa12.custom-localization-for-editor-extension`）—— 手動での対応は不要です。Touma VPM のリスティングがこの依存パッケージを含んでいるため、VCC / ALCOM が自動的に解決します。
+
+現在の VRChat アバタープロジェクトでは NDMF と Modular Avatar はほぼ必ず導入されています。これらが無いプロジェクトへの導入はサポートしていません。
 
 VCC または ALCOM に **Touma VPM** リポジトリを追加し、パッケージをプロジェクトに追加します。
 
